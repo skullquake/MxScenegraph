@@ -195,23 +195,74 @@ require(
 												var rotx=obj_primitive.get('rotx');
 												var roty=obj_primitive.get('roty');
 												var rotz=obj_primitive.get('rotz');
-												var w=obj_primitive.get('w');
-												var h=obj_primitive.get('h');
-												var color=obj_primitive.get('color');
-
-												const geometry=new THREE.BoxGeometry(w,h,w);
-												const material=new THREE.MeshPhongMaterial(
-													{
-														color:new THREE.Color(color)//'rgb(255,128,32)')
-													}
-												);
-												const cube=new THREE.Mesh(geometry, material);
-												this.scene.add(cube);
-												cube.position.x = x;
-												cube.position.y = y;
-												cube.position.z = z;
-
-												console.log('----------------------------------------');
+												switch(obj_primitive.getEntity()){
+													case 'Main.Line':
+														console.error('Creating '+obj_primitive.getEntity())
+														var x1=obj_primitive.get('x1');
+														var y1=obj_primitive.get('y1');
+														var z1=obj_primitive.get('z1');
+														var geometry=new THREE.Geometry();
+														geometry.vertices.push(
+															new THREE.Vector3(x,y,z),
+															new THREE.Vector3(x1,y1,z1)
+														);
+														var material = new THREE.LineBasicMaterial({
+																color:new THREE.Color(color)
+														});
+														var line=new THREE.Line(geometry,material);
+														//line.position.x=x;
+														//line.position.y=y;
+														//line.position.z=z;
+														this.scene.add(line);
+														break;
+													case 'Main.Plane':
+														var w=obj_primitive.get('w');
+														var h=obj_primitive.get('h');
+														var geometry=new THREE.PlaneGeometry(w,h,1);
+														var material=new THREE.MeshPhongMaterial(
+															{
+																color:new THREE.Color(color)
+															}
+														);
+														var plane=new THREE.Mesh(geometry,material);
+														this.scene.add(plane);
+														break;
+													case 'Main.Box':
+														console.error('Creating '+obj_primitive.getEntity())
+														var w=obj_primitive.get('w');
+														var h=obj_primitive.get('h');
+														var color=obj_primitive.get('color');
+														var geometry=new THREE.BoxGeometry(w,h,w);
+														var material=new THREE.MeshPhongMaterial(
+															{
+																color:new THREE.Color(color)
+															}
+														);
+														var cube=new THREE.Mesh(geometry, material);
+														cube.position.x = x;
+														cube.position.y = y;
+														cube.position.z = z;
+														this.scene.add(cube);
+														break;
+													case 'Main.Sphere':
+														console.error('Creating '+obj_primitive.getEntity())
+														var r=obj_primitive.get('r');
+														var geometry=new THREE.SphereGeometry(r,32,32);
+														var material=new THREE.MeshPhongMaterial(
+															{
+																color:new THREE.Color(color)
+															}
+														);
+														var sphere=new THREE.Mesh(geometry,material);
+														sphere.position.x=x;
+														sphere.position.y=y;
+														sphere.position.z=z;
+														this.scene.add( sphere );
+														break;
+													default:
+														console.error('Invalid Primitive Entity Type')
+														break;
+												}
 											}));
 										}));
 									}),
