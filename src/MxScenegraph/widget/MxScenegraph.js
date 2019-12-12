@@ -197,35 +197,38 @@ require(
 												var rotz=obj_primitive.get('rotz');
 												switch(obj_primitive.getEntity()){
 													case 'Main.Line':
-														console.error('Creating '+obj_primitive.getEntity())
 														var x1=obj_primitive.get('x1');
 														var y1=obj_primitive.get('y1');
 														var z1=obj_primitive.get('z1');
-														var geometry=new THREE.Geometry();
+														var material = new THREE.LineBasicMaterial({
+																color:new THREE.Color(color)
+														});
+
+														var geometry = new THREE.Geometry();
 														geometry.vertices.push(
 															new THREE.Vector3(x,y,z),
 															new THREE.Vector3(x1,y1,z1)
 														);
-														var material = new THREE.LineBasicMaterial({
-																color:new THREE.Color(color)
-														});
-														var line=new THREE.Line(geometry,material);
-														//line.position.x=x;
-														//line.position.y=y;
-														//line.position.z=z;
-														this.scene.add(line);
+
+														var line = new THREE.Line( geometry, material );
+														this.scene.add( line );
 														break;
 													case 'Main.Plane':
 														var w=obj_primitive.get('w');
 														var h=obj_primitive.get('h');
-														var geometry=new THREE.PlaneGeometry(w,h,1);
+														var geometry=new THREE.BoxGeometry(w,h,w);
+														var geometry = new THREE.PlaneGeometry(w,h,1);
 														var material=new THREE.MeshPhongMaterial(
 															{
 																color:new THREE.Color(color)
 															}
 														);
-														var plane=new THREE.Mesh(geometry,material);
+														var plane=new THREE.Mesh(geometry, material);
+														plane.position.x = x;
+														plane.position.y = y;
+														plane.position.z = z;
 														this.scene.add(plane);
+
 														break;
 													case 'Main.Box':
 														console.error('Creating '+obj_primitive.getEntity())
