@@ -207,7 +207,16 @@ require(
 															_color._b/255
 														);
 														plane.material=material;
-
+														plane.actionManager=new BABYLON.ActionManager(this.scene);
+														plane.actionManager.registerAction(
+															new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger, 
+															dojo.hitch(this,function(event){
+																mx.ui.info('clicked');
+																var pickedMesh=event.meshUnderPointer; 
+																var hl = new BABYLON.HighlightLayer("hl1", this.scene);
+																hl.addMesh(pickedMesh, BABYLON.Color3.Green());
+															}))
+														);
 														break;
 													case 'Main.Box':
 														console.error('Creating '+obj_primitive.getEntity())
@@ -232,8 +241,18 @@ require(
 															_color._r/255,
 															_color._g/255,
 															_color._b/255
-														);
+														);window.box=box;
 														box.material=material;
+														box.actionManager=new BABYLON.ActionManager(this.scene);
+														box.actionManager.registerAction(
+															new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger, 
+															dojo.hitch(this,function(event){
+																mx.ui.info('clicked');
+																var pickedMesh=event.meshUnderPointer; 
+																var hl = new BABYLON.HighlightLayer("hl1", this.scene);
+																hl.addMesh(pickedMesh, BABYLON.Color3.Green());
+															}))
+														);
 														break;
 													case 'Main.Sphere':
 														console.error('Creating '+obj_primitive.getEntity())
@@ -256,6 +275,16 @@ require(
 															_color._b/255
 														);
 														sphere.material=material;
+														sphere.actionManager=new BABYLON.ActionManager(this.scene);
+														sphere.actionManager.registerAction(
+															new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger, 
+															dojo.hitch(this,function(event){
+																mx.ui.info('clicked');
+																var pickedMesh=event.meshUnderPointer; 
+																var hl = new BABYLON.HighlightLayer("hl1", this.scene);
+																hl.addMesh(pickedMesh, BABYLON.Color3.Green());
+															}))
+														);
 														break;
 													default:
 														console.error('Invalid Primitive Entity Type')
@@ -317,7 +346,7 @@ require(
 						}
 					);
 					this.canvasContainer.appendChild(this.canvas);
-					this.engine=new BABYLON.Engine(this.canvas,true);
+					this.engine=new BABYLON.Engine(this.canvas,true,{stencil:true});
 					this.scene=this.createScene();
 					this.engine.runRenderLoop(dojo.hitch(this,this.loop));
 					window.addEventListener("resize",dojo.hitch(this,function(){
@@ -349,6 +378,16 @@ require(
 						new BABYLON.Vector3(0,1,-1),
 						scene
 					);
+					scene.onKeyboardObservable.add((kbInfo) => {
+						switch (kbInfo.type) {
+							case BABYLON.KeyboardEventTypes.KEYDOWN:
+								console.log("KEY DOWN: ", kbInfo.event.key);
+								break;
+							case BABYLON.KeyboardEventTypes.KEYUP:
+								console.log("KEY UP: ", kbInfo.event.keyCode);
+								break;
+						}
+					});
 					return scene;
 				},
 				loop:function(){ 
