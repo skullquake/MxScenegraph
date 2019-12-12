@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <package xmlns="http://www.mendix.com/package/1.0/">
-    <clientModule name="MxScenegraph" version="1.0.0" xmlns="http://www.mendix.com/clientModule/1.0/">
+    <clientModule name="MxScenegraphThree" version="1.0.0" xmlns="http://www.mendix.com/clientModule/1.0/">
         <widgetFiles>
-            <widgetFile path="MxScenegraph/MxScenegraph.xml" />
+            <widgetFile path="MxScenegraph/MxScenegraphThree.xml" />
+            <widgetFile path="MxScenegraph/MxScenegraphBabylon.xml" />
         </widgetFiles>
         <files>
             <file path="MxScenegraph/widget/" />
