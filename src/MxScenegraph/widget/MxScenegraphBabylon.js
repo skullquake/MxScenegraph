@@ -110,10 +110,6 @@ require(
 					this._handles=[];
 				},
 				postCreate:function(){
-					console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-					console.log('!!!!!!!!!!!!!!!')
-					console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-					console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
 					this.main();
 				},
 				update:function(obj,callback){
@@ -145,21 +141,73 @@ require(
 						dojoStyle.set(this.domNode,"display","block");
 						if(!this._datarendered){
 							new Promise((resolve,reject)=>{
+								//get camera
+								if(this._contextObj.getReference('Main.Scene_Camera')){
 									mx.data.get({
-									    guid:this._contextObj.getGuid(),
-									    path:'Main.Node_Scene',
-									    filter:{
-										offset:0,
-										amount:4096
-									    },
-									    callback:dojo.hitch(this,function(arr_node){
-										resolve(arr_node);
-									    }),
-									    error:dojo.hitch(this,function(e){
-										reject(e);
-									    })
-									});
+										    guid:this._contextObj.getGuid(),
+										    path:'Main.Scene_Camera',
+										    filter:{
+											offset:0,
+											amount:1
+										    },
+										    callback:dojo.hitch(this,function(arr_camera){
+											if(arr_camera.length>0){
+												resolve(arr_camera[0]);
+											}else{
+												resolve(null);
+											}
+										    }),
+										    error:dojo.hitch(this,function(e){
+											reject(e);
+										    })
+										});
+								}else{
+									resolve(null);
+								}
 							}).then(
+								dojo.hitch(
+									this,
+									function(obj_camera){
+										//set camera
+										if(obj_camera!=null){
+											var x=obj_camera.get('x')==null?0:obj_camera.get('x');
+											var y=obj_camera.get('y')==null?0:obj_camera.get('y');
+											var z=obj_camera.get('z')==null?0:obj_camera.get('z');
+											var vx=obj_camera.get('vx')==null?0:obj_camera.get('vx');
+											var vy=obj_camera.get('vy')==null?0:obj_camera.get('vy');
+											var vz=obj_camera.get('vz')==null?0:obj_camera.get('vz');
+											this.camera.position=new BABYLON.Vector3(x,y,z);
+										}
+										//get nodes
+										return new Promise(
+											(resolve,reject)=>{
+												mx.data.get(
+													{
+														guid:this._contextObj.getGuid(),
+														path:'Main.Node_Scene',
+														filter:{
+															offset:0,
+															amount:4096
+														},
+														callback:dojo.hitch(
+															this,
+															function(arr_node){
+																resolve(arr_node);
+															}
+														),
+														error:dojo.hitch(
+															this,
+															function(e){
+																reject(e);
+															}
+														)
+													}
+												);
+											}
+										);
+									}
+								)
+							).then(
 								dojo.hitch(this,function(arr_node){
 									var arr_promise=[];
 									arr_node.forEach(dojo.hitch(this,function(obj_node,obj_nodeidx){
