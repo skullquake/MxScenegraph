@@ -173,10 +173,12 @@ require(
 											var x=obj_camera.get('x')==null?0:obj_camera.get('x');
 											var y=obj_camera.get('y')==null?0:obj_camera.get('y');
 											var z=obj_camera.get('z')==null?0:obj_camera.get('z');
-											var vx=obj_camera.get('vx')==null?0:obj_camera.get('vx');
-											var vy=obj_camera.get('vy')==null?0:obj_camera.get('vy');
-											var vz=obj_camera.get('vz')==null?0:obj_camera.get('vz');
+											var tx=obj_camera.get('tx')==null?0:obj_camera.get('tx');
+											var ty=obj_camera.get('ty')==null?0:obj_camera.get('ty');
+											var tz=obj_camera.get('tz')==null?0:obj_camera.get('tz');
 											this.camera.position=new BABYLON.Vector3(x,y,z);
+											//this.camera.target=new BABYLON.Vector3(tx,ty,tz);
+											window.camera=this.camera;
 										}
 										//get nodes
 										return new Promise(
