@@ -245,6 +245,7 @@ require(
 													var rotx=obj_primitive.get('rotx');
 													var roty=obj_primitive.get('roty');
 													var rotz=obj_primitive.get('rotz');
+													console.log(rotx.toString());
 													switch(obj_primitive.getEntity()){
 														case 'Main.Line':
 															var x1=obj_primitive.get('x1');
@@ -270,6 +271,9 @@ require(
 																_color._g/255,
 																_color._b/255
 															);
+															line.rotation.x=rotx;
+															line.rotation.y=roty;
+															line.rotation.z=rotz;
 															line.material=material;
 															break;
 														case 'Main.Plane':
@@ -285,6 +289,12 @@ require(
 																this.scene
 															);
 															plane.position=new BABYLON.Vector3(x,y,z);
+															//var orientation = BABYLON.Vector3.RotationFromAxis(1,1,1);//axis1, axis2, axis3);
+															//plane.rotation = orientation;
+															plane.rotation.x=rotx;
+															plane.rotation.y=roty;
+															plane.rotation.z=rotz;
+															window.plane=plane;
 															var color=obj_primitive.get('color');
 															var _color=_tinycolor(color);
 															var material=new BABYLON.StandardMaterial(this.scene);
@@ -373,8 +383,11 @@ require(
 																_color._r/255,
 																_color._g/255,
 																_color._b/255
-															);window.box=box;
+															);
 															box.material=material;
+															box.rotation.x=rotx;
+															box.rotation.y=roty;
+															box.rotation.z=rotz;
 															//--------------------------------------------------------------------------------
 															//attach userdata
 															//--------------------------------------------------------------------------------
@@ -431,6 +444,9 @@ require(
 																_color._b/255
 															);
 															sphere.material=material;
+															sphere.rotation.x=rotx;
+															sphere.rotation.y=roty;
+															sphere.rotation.z=rotz;
 															//--------------------------------------------------------------------------------
 															//attach userdata
 															//--------------------------------------------------------------------------------
@@ -497,6 +513,9 @@ require(
 																_color._b/255
 															);
 															textMesh.material=material;
+															textMesh.rotation.x=rotx;
+															textMesh.rotation.y=roty;
+															textMesh.rotation.z=rotz;
 															//--------------------------------------------------------------------------------
 															//attach userdata
 															//--------------------------------------------------------------------------------
