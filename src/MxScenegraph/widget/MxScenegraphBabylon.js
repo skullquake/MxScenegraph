@@ -70,7 +70,7 @@ require(
 				_handles:null,
 				_contextObj:null,
 				//------------------------------
-				//------------------------------
+				str_primitive_click_mf:null,
 				//------------------------------
 				_objectChangeHandler:null,
 				//------------------------------
@@ -207,16 +207,40 @@ require(
 															_color._b/255
 														);
 														plane.material=material;
+														//--------------------------------------------------------------------------------
+														//attach userdata
+														//--------------------------------------------------------------------------------
+														plane.userdata={};
+														plane.userdata.mxobject=obj_primitive;
+														//--------------------------------------------------------------------------------
+														//setup evt
+														//--------------------------------------------------------------------------------
 														plane.actionManager=new BABYLON.ActionManager(this.scene);
 														plane.actionManager.registerAction(
 															new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger, 
 															dojo.hitch(this,function(event){
-																mx.ui.info('clicked');
+																console.log('clicked');
 																var pickedMesh=event.meshUnderPointer; 
-																var hl = new BABYLON.HighlightLayer("hl1", this.scene);
-																hl.addMesh(pickedMesh, BABYLON.Color3.Green());
+																if(
+																	pickedMesh!=null&&
+																	pickedMesh.userdata!=null&&
+																	pickedMesh.userdata.mxobject!=null&&
+																	pickedMesh.userdata.mxobject.getGuid()!=null&&
+																	this.str_primitive_click_mf!=null&&
+																	this.str_primitive_click_mf!=''
+																){
+																	this._execMf(
+																		this.str_primitive_click_mf,
+																		pickedMesh.userdata.mxobject.getGuid(),
+																		dojo.hitch(this,function(){
+																		})
+																	);
+																	//var hl = new BABYLON.HighlightLayer("hl1", this.scene);
+																	//hl.addMesh(pickedMesh, BABYLON.Color3.Green());
+																}
 															}))
 														);
+														//--------------------------------------------------------------------------------
 														break;
 													case 'Main.Box':
 														console.error('Creating '+obj_primitive.getEntity())
@@ -243,16 +267,40 @@ require(
 															_color._b/255
 														);window.box=box;
 														box.material=material;
+														//--------------------------------------------------------------------------------
+														//attach userdata
+														//--------------------------------------------------------------------------------
+														box.userdata={};
+														box.userdata.mxobject=obj_primitive;
+														//--------------------------------------------------------------------------------
+														//setup evt
+														//--------------------------------------------------------------------------------
 														box.actionManager=new BABYLON.ActionManager(this.scene);
 														box.actionManager.registerAction(
 															new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger, 
 															dojo.hitch(this,function(event){
-																mx.ui.info('clicked');
+																console.log('clicked');
 																var pickedMesh=event.meshUnderPointer; 
-																var hl = new BABYLON.HighlightLayer("hl1", this.scene);
-																hl.addMesh(pickedMesh, BABYLON.Color3.Green());
+																if(
+																	pickedMesh!=null&&
+																	pickedMesh.userdata!=null&&
+																	pickedMesh.userdata.mxobject!=null&&
+																	pickedMesh.userdata.mxobject.getGuid()!=null&&
+																	this.str_primitive_click_mf!=null&&
+																	this.str_primitive_click_mf!=''
+																){
+																	this._execMf(
+																		this.str_primitive_click_mf,
+																		pickedMesh.userdata.mxobject.getGuid(),
+																		dojo.hitch(this,function(){
+																		})
+																	);
+																	//var hl = new BABYLON.HighlightLayer("hl1", this.scene);
+																	//hl.addMesh(pickedMesh, BABYLON.Color3.Green());
+																}
 															}))
 														);
+														//--------------------------------------------------------------------------------
 														break;
 													case 'Main.Sphere':
 														console.error('Creating '+obj_primitive.getEntity())
@@ -275,16 +323,41 @@ require(
 															_color._b/255
 														);
 														sphere.material=material;
+														//--------------------------------------------------------------------------------
+														//attach userdata
+														//--------------------------------------------------------------------------------
+														sphere.userdata={};
+														sphere.userdata.mxobject=obj_primitive;
+														//--------------------------------------------------------------------------------
+														//setup evt
+														//--------------------------------------------------------------------------------
 														sphere.actionManager=new BABYLON.ActionManager(this.scene);
 														sphere.actionManager.registerAction(
 															new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger, 
 															dojo.hitch(this,function(event){
-																mx.ui.info('clicked');
+																console.log('clicked');
 																var pickedMesh=event.meshUnderPointer; 
-																var hl = new BABYLON.HighlightLayer("hl1", this.scene);
-																hl.addMesh(pickedMesh, BABYLON.Color3.Green());
+																if(
+																	pickedMesh!=null&&
+																	pickedMesh.userdata!=null&&
+																	pickedMesh.userdata.mxobject!=null&&
+																	pickedMesh.userdata.mxobject.getGuid()!=null&&
+																	this.str_primitive_click_mf!=null&&
+																	this.str_primitive_click_mf!=''
+																){
+																	this._execMf(
+																		this.str_primitive_click_mf,
+																		pickedMesh.userdata.mxobject.getGuid(),
+																		dojo.hitch(this,function(){
+																		})
+																	);
+																	//var hl = new BABYLON.HighlightLayer("hl1", this.scene);
+																	//hl.addMesh(pickedMesh, BABYLON.Color3.Green());
+																}
 															}))
 														);
+														//--------------------------------------------------------------------------------
+
 														break;
 													default:
 														console.error('Invalid Primitive Entity Type')
