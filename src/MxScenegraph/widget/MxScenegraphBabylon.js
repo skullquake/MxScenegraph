@@ -223,6 +223,7 @@ require(
 															line.material=material;
 															break;
 														case 'Main.Plane':
+															window.obj_primitive=obj_primitive;
 															var w=obj_primitive.get('w');
 															var h=obj_primitive.get('h');
 															var plane=BABYLON.MeshBuilder.CreatePlane(
@@ -244,6 +245,25 @@ require(
 																_color._b/255
 															);
 															plane.material=material;
+															mx.data.get({
+																guid:obj_primitive.getGuid(),
+																path:'Main.Texture',
+																filter:{
+																	offset:0,
+																	amount:1
+																},
+																callback:dojo.hitch(this,function(objs){
+																	if(objs.length>0){
+																		var url='/file?guid='+objs[0].getGuid()+'&cachebust='+(new Date().getTime());
+																		var mat = new BABYLON.StandardMaterial("",this.scene);
+																		mat.diffuseTexture = new BABYLON.Texture(url,this.scene);
+																		plane.material=mat;
+																	}else{}
+																}),
+																error:function(e){
+																	console.error("Could not retrieve objects:",e);
+																}
+															});
 															//--------------------------------------------------------------------------------
 															//attach userdata
 															//--------------------------------------------------------------------------------
