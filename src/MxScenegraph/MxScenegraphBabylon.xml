@@ -9,5 +9,15 @@
 			<category>Interaction</category>
 			<description>Fully Qualified Primitive Click Microflow</description>
 		</property>
+		<property key="int_canvas_width" type="integer" required="true" defaultValue="320">
+			<caption>Width</caption>
+			<category>Rendering</category>
+			<description>Canvas Width</description>
+		</property>
+		<property key="int_canvas_height" type="integer" required="true" defaultValue="240">
+			<caption>Height</caption>
+			<category>Rendering</category>
+			<description>Canvas Height</description>
+		</property>
 	</properties>
 </widget>

@@ -65,25 +65,28 @@ require(
 		widgetTemplate
 	){
 		"use strict";
-					window.earcut=_earcut;
-					require(
-						{
-							packages:[
-								{
-									name:'_meshwriter',
-									location:'/widgets/MxScenegraph/lib/babylon.js',
-									main:'meshwriter'
-								}
-							]
-						},
-						[
-							'_meshwriter'
-						],
-						function(
-							_meshwriter
-						){}
-					)
-
+		//--------------------------------------------------------------------------------
+		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		//--------------------------------------------------------------------------------
+		window.earcut=_earcut;
+		require(
+			{
+				packages:[
+					{
+						name:'_meshwriter',
+						location:'/widgets/MxScenegraph/lib/babylon.js',
+						main:'meshwriter'
+					}
+				]
+			},
+			[
+				'_meshwriter'
+			],
+			function(
+				_meshwriter
+			){}
+		)
+		//--------------------------------------------------------------------------------
 		return declare(
 			"MxScenegraph.widget.MxScenegraphBabylon",
 			[
@@ -97,6 +100,8 @@ require(
 				_contextObj:null,
 				//------------------------------
 				str_primitive_click_mf:null,
+				int_canvas_width:null,
+				int_canvas_height:null,
 				//------------------------------
 				_datarendered:false,
 				_objectChangeHandler:null,
@@ -433,7 +438,7 @@ require(
 															textMesh.actionManager=new BABYLON.ActionManager(this.scene);
 															textMesh.actionManager.registerAction(
 																new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger, 
-																dojo.hitch(this,function(event){
+																dojo.hitch(this,function(event){alert('asdf');
 																	console.log('clicked');
 																	var pickedMesh=event.meshUnderPointer; 
 																	if(
@@ -520,8 +525,8 @@ require(
 					this.canvas=dojo.create(
 						'canvas',
 						{
-							'width':320,
-							'height':320
+							'width':this.int_canvas_width==null||this._int_canvas_width<0?320:this.int_canvas_width,
+							'height':this.int_canvas_height==null||this._int_canvas_height<0?320:this.int_canvas_height
 						}
 					);
 					this.canvasContainer.appendChild(this.canvas);
