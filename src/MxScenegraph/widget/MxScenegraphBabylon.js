@@ -7,6 +7,11 @@ require(
 				main:'babylon'
 			},
 			{
+				name:'_earcut',
+				location:'/widgets/MxScenegraph/lib/babylon.js',
+				main:'earcut.min'
+			},
+			{
 				name:'_tinycolorbabylonjs',
 				location:'/widgets/MxScenegraph/lib/tinycolor',
 				main:'tinycolor-min'
@@ -32,6 +37,7 @@ require(
 		"dojo/mouse",
 		"dojo/on",
 		'babylonjs',
+		'_earcut',
 		'_tinycolorbabylonjs',
 		"dojo/text!MxScenegraph/widget/template/MxScenegraphBabylon.html"
 	],
@@ -54,10 +60,30 @@ require(
 		mouse,
 		on,
 		babylonjs,
+		_earcut,
 		_tinycolor,
 		widgetTemplate
 	){
 		"use strict";
+					window.earcut=_earcut;
+					require(
+						{
+							packages:[
+								{
+									name:'_meshwriter',
+									location:'/widgets/MxScenegraph/lib/babylon.js',
+									main:'meshwriter'
+								}
+							]
+						},
+						[
+							'_meshwriter'
+						],
+						function(
+							_meshwriter
+						){}
+					)
+
 		return declare(
 			"MxScenegraph.widget.MxScenegraphBabylon",
 			[
@@ -79,6 +105,10 @@ require(
 					this._handles=[];
 				},
 				postCreate:function(){
+					console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+					console.log('!!!!!!!!!!!!!!!')
+					console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+					console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
 					this.main();
 				},
 				update:function(obj,callback){
@@ -248,12 +278,13 @@ require(
 															console.error('Creating '+obj_primitive.getEntity())
 															var w=obj_primitive.get('w');
 															var h=obj_primitive.get('h');
+															var d=obj_primitive.get('d');
 															var box=BABYLON.MeshBuilder.CreateBox(
 																"",
 																{
 																	height:h,
 																	width:w,
-																	depth:w,
+																	depth:d,
 																	updatable:true,
 																	sideOrientation:BABYLON.Mesh.DOUBLESIDE}
 																)
@@ -359,7 +390,72 @@ require(
 																}))
 															);
 															//--------------------------------------------------------------------------------
-
+															break;
+														case 'Main.Text':
+															var sz=obj_primitive.get('sz')/10;
+															var val=obj_primitive.get('val');
+															var color=obj_primitive.get('color');
+															//var Writer=BABYLON.MeshWriter(this.scene,{scale:1});
+															var Writer=MeshWriter(this.scene,{scale:sz});
+															var text1=new Writer(
+																val,
+																{
+																	"anchor": "center",
+																	"letter-height": 10,
+																	"color": color,
+																	"position": {
+																		"x":0,
+																		"y":0,
+																		"z":0
+																	}
+																}
+															);
+															var textMesh=text1.getMesh();
+															textMesh.position=new BABYLON.Vector3(x,y,z);
+															var color=obj_primitive.get('color');
+															var _color=_tinycolor(color);
+															var material=new BABYLON.StandardMaterial(this.scene);
+															material.alpha=1;
+															material.diffuseColor=new BABYLON.Color3(
+																_color._r/255,
+																_color._g/255,
+																_color._b/255
+															);
+															textMesh.material=material;
+															//--------------------------------------------------------------------------------
+															//attach userdata
+															//--------------------------------------------------------------------------------
+															textMesh.userdata={};
+															textMesh.userdata.mxobject=obj_primitive;
+															//--------------------------------------------------------------------------------
+															//setup evt
+															//--------------------------------------------------------------------------------
+															textMesh.actionManager=new BABYLON.ActionManager(this.scene);
+															textMesh.actionManager.registerAction(
+																new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger, 
+																dojo.hitch(this,function(event){
+																	console.log('clicked');
+																	var pickedMesh=event.meshUnderPointer; 
+																	if(
+																		pickedMesh!=null&&
+																		pickedMesh.userdata!=null&&
+																		pickedMesh.userdata.mxobject!=null&&
+																		pickedMesh.userdata.mxobject.getGuid()!=null&&
+																		this.str_primitive_click_mf!=null&&
+																		this.str_primitive_click_mf!=''
+																	){
+																		this._execMf(
+																			this.str_primitive_click_mf,
+																			pickedMesh.userdata.mxobject.getGuid(),
+																			dojo.hitch(this,function(){
+																			})
+																		);
+																		//var hl = new BABYLON.HighlightLayer("hl1", this.scene);
+																		//hl.addMesh(pickedMesh, BABYLON.Color3.Green());
+																	}
+																}))
+															);
+															//--------------------------------------------------------------------------------
 															break;
 														default:
 															console.error('Invalid Primitive Entity Type')
