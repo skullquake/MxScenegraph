@@ -72,6 +72,7 @@ require(
 				//------------------------------
 				str_primitive_click_mf:null,
 				//------------------------------
+				_datarendered:false,
 				_objectChangeHandler:null,
 				//------------------------------
 				constructor:function(){
@@ -107,276 +108,282 @@ require(
 				_updateRendering:function(callback){
 					if(this._contextObj!=null){
 						dojoStyle.set(this.domNode,"display","block");
-						new Promise((resolve,reject)=>{
-								mx.data.get({
-								    guid:this._contextObj.getGuid(),
-								    path:'Main.Node_Scene',
-								    filter:{
-									offset:0,
-									amount:4096
-								    },
-								    callback:dojo.hitch(this,function(arr_node){
-									resolve(arr_node);
-								    }),
-								    error:dojo.hitch(this,function(e){
-									reject(e);
-								    })
-								});
-						}).then(
-							dojo.hitch(this,function(arr_node){
-								var arr_promise=[];
-								arr_node.forEach(dojo.hitch(this,function(obj_node,obj_nodeidx){
-									arr_promise.push(
-										new Promise((resolve,reject)=>{
-												mx.data.get({
-												    guid:obj_node.getGuid(),
-												    path:'Main.Primitive_Node',
-												    filter:{
-													offset:0,
-													amount:4096
-												    },
-												    callback:dojo.hitch(this,function(arr_primitive){
-													resolve(arr_primitive);
-												    }),
-												    error:dojo.hitch(this,function(e){
-													reject(e);
-												    })
-												});
+						if(!this._datarendered){
+							new Promise((resolve,reject)=>{
+									mx.data.get({
+									    guid:this._contextObj.getGuid(),
+									    path:'Main.Node_Scene',
+									    filter:{
+										offset:0,
+										amount:4096
+									    },
+									    callback:dojo.hitch(this,function(arr_node){
+										resolve(arr_node);
+									    }),
+									    error:dojo.hitch(this,function(e){
+										reject(e);
+									    })
+									});
+							}).then(
+								dojo.hitch(this,function(arr_node){
+									var arr_promise=[];
+									arr_node.forEach(dojo.hitch(this,function(obj_node,obj_nodeidx){
+										arr_promise.push(
+											new Promise((resolve,reject)=>{
+													mx.data.get({
+													    guid:obj_node.getGuid(),
+													    path:'Main.Primitive_Node',
+													    filter:{
+														offset:0,
+														amount:4096
+													    },
+													    callback:dojo.hitch(this,function(arr_primitive){
+														resolve(arr_primitive);
+													    }),
+													    error:dojo.hitch(this,function(e){
+														reject(e);
+													    })
+													});
+											})
+										);
+									}))
+									Promise.all(arr_promise).then(
+										dojo.hitch(this,function(arr_arr_primitive){
+											arr_arr_primitive.forEach(dojo.hitch(this,function(arr_primitive,arr_primitive_idx){
+												arr_primitive.forEach(dojo.hitch(this,function(obj_primitive,obj_primitive_idx){
+													var x=obj_primitive.get('x');
+													var y=obj_primitive.get('y');
+													var z=obj_primitive.get('z');
+													x=x==null?0:x;
+													y=y==null?0:y;
+													z=z==null?0:z;
+													var rotx=obj_primitive.get('rotx');
+													var roty=obj_primitive.get('roty');
+													var rotz=obj_primitive.get('rotz');
+													switch(obj_primitive.getEntity()){
+														case 'Main.Line':
+															var x1=obj_primitive.get('x1');
+															var y1=obj_primitive.get('y1');
+															var z1=obj_primitive.get('z1');
+															var arr_p=[
+																new BABYLON.Vector3(x,y,z),
+																new BABYLON.Vector3(x1,y1,z1)
+															];
+															var line=BABYLON.MeshBuilder.CreateLines(
+																"lines",
+																{
+																	points:arr_p
+																},
+																this.scene
+															);
+															var color=obj_primitive.get('color');
+															var _color=_tinycolor(color);
+															var material=new BABYLON.StandardMaterial(this.scene);
+															material.alpha=1;
+															material.diffuseColor=new BABYLON.Color3(
+																_color._r/255,
+																_color._g/255,
+																_color._b/255
+															);
+															line.material=material;
+															break;
+														case 'Main.Plane':
+															var w=obj_primitive.get('w');
+															var h=obj_primitive.get('h');
+															var plane=BABYLON.MeshBuilder.CreatePlane(
+																"",
+																{
+																	width:w,
+																	height:h
+																},
+																this.scene
+															);
+															plane.position=new BABYLON.Vector3(x,y,z);
+															var color=obj_primitive.get('color');
+															var _color=_tinycolor(color);
+															var material=new BABYLON.StandardMaterial(this.scene);
+															material.alpha=1;
+															material.diffuseColor=new BABYLON.Color3(
+																_color._r/255,
+																_color._g/255,
+																_color._b/255
+															);
+															plane.material=material;
+															//--------------------------------------------------------------------------------
+															//attach userdata
+															//--------------------------------------------------------------------------------
+															plane.userdata={};
+															plane.userdata.mxobject=obj_primitive;
+															//--------------------------------------------------------------------------------
+															//setup evt
+															//--------------------------------------------------------------------------------
+															plane.actionManager=new BABYLON.ActionManager(this.scene);
+															plane.actionManager.registerAction(
+																new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger, 
+																dojo.hitch(this,function(event){
+																	console.log('clicked');
+																	var pickedMesh=event.meshUnderPointer; 
+																	if(
+																		pickedMesh!=null&&
+																		pickedMesh.userdata!=null&&
+																		pickedMesh.userdata.mxobject!=null&&
+																		pickedMesh.userdata.mxobject.getGuid()!=null&&
+																		this.str_primitive_click_mf!=null&&
+																		this.str_primitive_click_mf!=''
+																	){
+																		this._execMf(
+																			this.str_primitive_click_mf,
+																			pickedMesh.userdata.mxobject.getGuid(),
+																			dojo.hitch(this,function(){
+																			})
+																		);
+																		//var hl = new BABYLON.HighlightLayer("hl1", this.scene);
+																		//hl.addMesh(pickedMesh, BABYLON.Color3.Green());
+																	}
+																}))
+															);
+															//--------------------------------------------------------------------------------
+															break;
+														case 'Main.Box':
+															console.error('Creating '+obj_primitive.getEntity())
+															var w=obj_primitive.get('w');
+															var h=obj_primitive.get('h');
+															var box=BABYLON.MeshBuilder.CreateBox(
+																"",
+																{
+																	height:h,
+																	width:w,
+																	depth:w,
+																	updatable:true,
+																	sideOrientation:BABYLON.Mesh.DOUBLESIDE}
+																)
+															;
+															box.position=new BABYLON.Vector3(x,y,z);
+															var color=obj_primitive.get('color');
+															var _color=_tinycolor(color);
+															var material=new BABYLON.StandardMaterial(this.scene);
+															material.alpha=1;
+															material.diffuseColor=new BABYLON.Color3(
+																_color._r/255,
+																_color._g/255,
+																_color._b/255
+															);window.box=box;
+															box.material=material;
+															//--------------------------------------------------------------------------------
+															//attach userdata
+															//--------------------------------------------------------------------------------
+															box.userdata={};
+															box.userdata.mxobject=obj_primitive;
+															//--------------------------------------------------------------------------------
+															//setup evt
+															//--------------------------------------------------------------------------------
+															box.actionManager=new BABYLON.ActionManager(this.scene);
+															box.actionManager.registerAction(
+																new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger, 
+																dojo.hitch(this,function(event){
+																	console.log('clicked');
+																	var pickedMesh=event.meshUnderPointer; 
+																	if(
+																		pickedMesh!=null&&
+																		pickedMesh.userdata!=null&&
+																		pickedMesh.userdata.mxobject!=null&&
+																		pickedMesh.userdata.mxobject.getGuid()!=null&&
+																		this.str_primitive_click_mf!=null&&
+																		this.str_primitive_click_mf!=''
+																	){
+																		this._execMf(
+																			this.str_primitive_click_mf,
+																			pickedMesh.userdata.mxobject.getGuid(),
+																			dojo.hitch(this,function(){
+																			})
+																		);
+																		//var hl = new BABYLON.HighlightLayer("hl1", this.scene);
+																		//hl.addMesh(pickedMesh, BABYLON.Color3.Green());
+																	}
+																}))
+															);
+															//--------------------------------------------------------------------------------
+															break;
+														case 'Main.Sphere':
+															console.error('Creating '+obj_primitive.getEntity())
+															var r=obj_primitive.get('r');
+															var sphere=BABYLON.MeshBuilder.CreateSphere(
+																"sphere",
+																{
+																	diameter:r
+																},
+																this.scene
+															);
+															sphere.position = new BABYLON.Vector3(x,y,z);
+															var color=obj_primitive.get('color');
+															var _color=_tinycolor(color);
+															var material=new BABYLON.StandardMaterial(this.scene);
+															material.alpha=1;
+															material.diffuseColor=new BABYLON.Color3(
+																_color._r/255,
+																_color._g/255,
+																_color._b/255
+															);
+															sphere.material=material;
+															//--------------------------------------------------------------------------------
+															//attach userdata
+															//--------------------------------------------------------------------------------
+															sphere.userdata={};
+															sphere.userdata.mxobject=obj_primitive;
+															//--------------------------------------------------------------------------------
+															//setup evt
+															//--------------------------------------------------------------------------------
+															sphere.actionManager=new BABYLON.ActionManager(this.scene);
+															sphere.actionManager.registerAction(
+																new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger, 
+																dojo.hitch(this,function(event){
+																	console.log('clicked');
+																	var pickedMesh=event.meshUnderPointer; 
+																	if(
+																		pickedMesh!=null&&
+																		pickedMesh.userdata!=null&&
+																		pickedMesh.userdata.mxobject!=null&&
+																		pickedMesh.userdata.mxobject.getGuid()!=null&&
+																		this.str_primitive_click_mf!=null&&
+																		this.str_primitive_click_mf!=''
+																	){
+																		this._execMf(
+																			this.str_primitive_click_mf,
+																			pickedMesh.userdata.mxobject.getGuid(),
+																			dojo.hitch(this,function(){
+																			})
+																		);
+																		//var hl = new BABYLON.HighlightLayer("hl1", this.scene);
+																		//hl.addMesh(pickedMesh, BABYLON.Color3.Green());
+																	}
+																}))
+															);
+															//--------------------------------------------------------------------------------
+
+															break;
+														default:
+															console.error('Invalid Primitive Entity Type')
+															break;
+													}
+												}));
+											}));
+											this._datarendered=true;
+										}),
+										dojo.hitch(this,function(err){
+											mx.ui.error(err.toString());
+											this._datarendered=false;
 										})
 									);
-								}))
-								Promise.all(arr_promise).then(
-									dojo.hitch(this,function(arr_arr_primitive){
-										arr_arr_primitive.forEach(dojo.hitch(this,function(arr_primitive,arr_primitive_idx){
-											arr_primitive.forEach(dojo.hitch(this,function(obj_primitive,obj_primitive_idx){
-												var x=obj_primitive.get('x');
-												var y=obj_primitive.get('y');
-												var z=obj_primitive.get('z');
-												x=x==null?0:x;
-												y=y==null?0:y;
-												z=z==null?0:z;
-												var rotx=obj_primitive.get('rotx');
-												var roty=obj_primitive.get('roty');
-												var rotz=obj_primitive.get('rotz');
-												switch(obj_primitive.getEntity()){
-													case 'Main.Line':
-														var x1=obj_primitive.get('x1');
-														var y1=obj_primitive.get('y1');
-														var z1=obj_primitive.get('z1');
-														var arr_p=[
-															new BABYLON.Vector3(x,y,z),
-															new BABYLON.Vector3(x1,y1,z1)
-														];
-														var line=BABYLON.MeshBuilder.CreateLines(
-															"lines",
-															{
-																points:arr_p
-															},
-															this.scene
-														);
-														var color=obj_primitive.get('color');
-														var _color=_tinycolor(color);
-														var material=new BABYLON.StandardMaterial(this.scene);
-														material.alpha=1;
-														material.diffuseColor=new BABYLON.Color3(
-															_color._r/255,
-															_color._g/255,
-															_color._b/255
-														);
-														line.material=material;
-														break;
-													case 'Main.Plane':
-														var w=obj_primitive.get('w');
-														var h=obj_primitive.get('h');
-														var plane=BABYLON.MeshBuilder.CreatePlane(
-															"",
-															{
-																width:w,
-																height:h
-															},
-															this.scene
-														);
-														plane.position=new BABYLON.Vector3(x,y,z);
-														var color=obj_primitive.get('color');
-														var _color=_tinycolor(color);
-														var material=new BABYLON.StandardMaterial(this.scene);
-														material.alpha=1;
-														material.diffuseColor=new BABYLON.Color3(
-															_color._r/255,
-															_color._g/255,
-															_color._b/255
-														);
-														plane.material=material;
-														//--------------------------------------------------------------------------------
-														//attach userdata
-														//--------------------------------------------------------------------------------
-														plane.userdata={};
-														plane.userdata.mxobject=obj_primitive;
-														//--------------------------------------------------------------------------------
-														//setup evt
-														//--------------------------------------------------------------------------------
-														plane.actionManager=new BABYLON.ActionManager(this.scene);
-														plane.actionManager.registerAction(
-															new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger, 
-															dojo.hitch(this,function(event){
-																console.log('clicked');
-																var pickedMesh=event.meshUnderPointer; 
-																if(
-																	pickedMesh!=null&&
-																	pickedMesh.userdata!=null&&
-																	pickedMesh.userdata.mxobject!=null&&
-																	pickedMesh.userdata.mxobject.getGuid()!=null&&
-																	this.str_primitive_click_mf!=null&&
-																	this.str_primitive_click_mf!=''
-																){
-																	this._execMf(
-																		this.str_primitive_click_mf,
-																		pickedMesh.userdata.mxobject.getGuid(),
-																		dojo.hitch(this,function(){
-																		})
-																	);
-																	//var hl = new BABYLON.HighlightLayer("hl1", this.scene);
-																	//hl.addMesh(pickedMesh, BABYLON.Color3.Green());
-																}
-															}))
-														);
-														//--------------------------------------------------------------------------------
-														break;
-													case 'Main.Box':
-														console.error('Creating '+obj_primitive.getEntity())
-														var w=obj_primitive.get('w');
-														var h=obj_primitive.get('h');
-														var box=BABYLON.MeshBuilder.CreateBox(
-															"",
-															{
-																height:h,
-																width:w,
-																depth:w,
-																updatable:true,
-																sideOrientation:BABYLON.Mesh.DOUBLESIDE}
-															)
-														;
-														box.position=new BABYLON.Vector3(x,y,z);
-														var color=obj_primitive.get('color');
-														var _color=_tinycolor(color);
-														var material=new BABYLON.StandardMaterial(this.scene);
-														material.alpha=1;
-														material.diffuseColor=new BABYLON.Color3(
-															_color._r/255,
-															_color._g/255,
-															_color._b/255
-														);window.box=box;
-														box.material=material;
-														//--------------------------------------------------------------------------------
-														//attach userdata
-														//--------------------------------------------------------------------------------
-														box.userdata={};
-														box.userdata.mxobject=obj_primitive;
-														//--------------------------------------------------------------------------------
-														//setup evt
-														//--------------------------------------------------------------------------------
-														box.actionManager=new BABYLON.ActionManager(this.scene);
-														box.actionManager.registerAction(
-															new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger, 
-															dojo.hitch(this,function(event){
-																console.log('clicked');
-																var pickedMesh=event.meshUnderPointer; 
-																if(
-																	pickedMesh!=null&&
-																	pickedMesh.userdata!=null&&
-																	pickedMesh.userdata.mxobject!=null&&
-																	pickedMesh.userdata.mxobject.getGuid()!=null&&
-																	this.str_primitive_click_mf!=null&&
-																	this.str_primitive_click_mf!=''
-																){
-																	this._execMf(
-																		this.str_primitive_click_mf,
-																		pickedMesh.userdata.mxobject.getGuid(),
-																		dojo.hitch(this,function(){
-																		})
-																	);
-																	//var hl = new BABYLON.HighlightLayer("hl1", this.scene);
-																	//hl.addMesh(pickedMesh, BABYLON.Color3.Green());
-																}
-															}))
-														);
-														//--------------------------------------------------------------------------------
-														break;
-													case 'Main.Sphere':
-														console.error('Creating '+obj_primitive.getEntity())
-														var r=obj_primitive.get('r');
-														var sphere=BABYLON.MeshBuilder.CreateSphere(
-															"sphere",
-															{
-																diameter:r
-															},
-															this.scene
-														);
-														sphere.position = new BABYLON.Vector3(x,y,z);
-														var color=obj_primitive.get('color');
-														var _color=_tinycolor(color);
-														var material=new BABYLON.StandardMaterial(this.scene);
-														material.alpha=1;
-														material.diffuseColor=new BABYLON.Color3(
-															_color._r/255,
-															_color._g/255,
-															_color._b/255
-														);
-														sphere.material=material;
-														//--------------------------------------------------------------------------------
-														//attach userdata
-														//--------------------------------------------------------------------------------
-														sphere.userdata={};
-														sphere.userdata.mxobject=obj_primitive;
-														//--------------------------------------------------------------------------------
-														//setup evt
-														//--------------------------------------------------------------------------------
-														sphere.actionManager=new BABYLON.ActionManager(this.scene);
-														sphere.actionManager.registerAction(
-															new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger, 
-															dojo.hitch(this,function(event){
-																console.log('clicked');
-																var pickedMesh=event.meshUnderPointer; 
-																if(
-																	pickedMesh!=null&&
-																	pickedMesh.userdata!=null&&
-																	pickedMesh.userdata.mxobject!=null&&
-																	pickedMesh.userdata.mxobject.getGuid()!=null&&
-																	this.str_primitive_click_mf!=null&&
-																	this.str_primitive_click_mf!=''
-																){
-																	this._execMf(
-																		this.str_primitive_click_mf,
-																		pickedMesh.userdata.mxobject.getGuid(),
-																		dojo.hitch(this,function(){
-																		})
-																	);
-																	//var hl = new BABYLON.HighlightLayer("hl1", this.scene);
-																	//hl.addMesh(pickedMesh, BABYLON.Color3.Green());
-																}
-															}))
-														);
-														//--------------------------------------------------------------------------------
-
-														break;
-													default:
-														console.error('Invalid Primitive Entity Type')
-														break;
-												}
-											}));
-										}));
-									}),
-									dojo.hitch(this,function(err){
-										mx.ui.error(err.toString());
-									})
-								);
-							}),
-							dojo.hitch(this,function(err){
-								mx.ui.error(err.toString());
-							})
-						);
+								}),
+								dojo.hitch(this,function(err){
+									mx.ui.error(err.toString());
+									this._datarendered=false;
+								})
+							);
+						}
 					} else {
 						dojoStyle.set(this.domNode,"display","none");
+						this._datarendered=false;
 					}
 					this._executeCallback(callback,"_updateRendering");
 				},
@@ -411,6 +418,9 @@ require(
 					this.main();
 				},
 				main:function(){
+					console.log('----------------------------------------');
+					console.log('main()');
+					console.log('----------------------------------------');
 					this.canvas=dojo.create(
 						'canvas',
 						{
