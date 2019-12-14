@@ -83,6 +83,9 @@ public class Primitive
 		if (com.mendix.core.Core.isSubClassOf("Main.Line", mendixObject.getType()))
 			return main.proxies.Line.initialize(context, mendixObject);
 
+		if (com.mendix.core.Core.isSubClassOf("Main.Model", mendixObject.getType()))
+			return main.proxies.Model.initialize(context, mendixObject);
+
 		if (com.mendix.core.Core.isSubClassOf("Main.Plane", mendixObject.getType()))
 			return main.proxies.Plane.initialize(context, mendixObject);
 

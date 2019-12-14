@@ -81,6 +81,9 @@ public class FileDocument
 		if (com.mendix.core.Core.isSubClassOf("System.Image", mendixObject.getType()))
 			return system.proxies.Image.initialize(context, mendixObject);
 
+		if (com.mendix.core.Core.isSubClassOf("Main.ModelFile", mendixObject.getType()))
+			return main.proxies.ModelFile.initialize(context, mendixObject);
+
 		return new system.proxies.FileDocument(context, mendixObject);
 	}
 

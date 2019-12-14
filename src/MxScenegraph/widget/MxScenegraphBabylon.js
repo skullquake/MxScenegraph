@@ -278,16 +278,19 @@ require(
 															break;
 														case 'Main.Plane':
 															window.obj_primitive=obj_primitive;
-															var w=obj_primitive.get('w');
-															var h=obj_primitive.get('h');
+															var w=obj_primitive.get('w')==null?1:obj_primitive.get('w');
+															var h=obj_primitive.get('h')==null?1:obj_primitive.get('h');
+															var doublesided=obj_primitive.get('doublesided')==null?true:obj_primitive.get('doublesided');
 															var plane=BABYLON.MeshBuilder.CreatePlane(
 																"",
 																{
 																	width:w,
-																	height:h
+																	height:h,
+																	sideOrientation:doublesided?BABYLON.Mesh.DOUBLESIDE:BABYLON.Mesh.FRONTSIDE 
 																},
 																this.scene
 															);
+															//var plane = BABYLON.MeshBuilder.CreatePlane("plane", {height:1, width: 0.665, sideOrientation: BABYLON.Mesh.DOUBLESIDE, frontUVs: f, backUVs: b}, scene);
 															plane.position=new BABYLON.Vector3(x,y,z);
 															//var orientation = BABYLON.Vector3.RotationFromAxis(1,1,1);//axis1, axis2, axis3);
 															//plane.rotation = orientation;
@@ -364,6 +367,7 @@ require(
 															var w=obj_primitive.get('w');
 															var h=obj_primitive.get('h');
 															var d=obj_primitive.get('d');
+															var doublesided=obj_primitive.get('doublesided')==null?true:obj_primitive.get('doublesided');
 															var box=BABYLON.MeshBuilder.CreateBox(
 																"",
 																{
@@ -371,9 +375,9 @@ require(
 																	width:w,
 																	depth:d,
 																	updatable:true,
-																	sideOrientation:BABYLON.Mesh.DOUBLESIDE}
-																)
-															;
+																	sideOrientation:doublesided?BABYLON.Mesh.DOUBLESIDE:BABYLON.Mesh.FRONTSIDE 
+																}
+															);
 															box.position=new BABYLON.Vector3(x,y,z);
 															var color=obj_primitive.get('color');
 															var _color=_tinycolor(color);
@@ -426,10 +430,12 @@ require(
 														case 'Main.Sphere':
 															console.error('Creating '+obj_primitive.getEntity())
 															var r=obj_primitive.get('r');
+															var doublesided=obj_primitive.get('doublesided')==null?true:obj_primitive.get('doublesided');
 															var sphere=BABYLON.MeshBuilder.CreateSphere(
 																"sphere",
 																{
-																	diameter:r
+																	diameter:r,
+																	sideOrientation:doublesided?BABYLON.Mesh.DOUBLESIDE:BABYLON.Mesh.FRONTSIDE 
 																},
 																this.scene
 															);

@@ -18,6 +18,7 @@ public class Plane extends main.proxies.Primitive
 	{
 		w("w"),
 		h("h"),
+		doublesided("doublesided"),
 		Name("Name"),
 		x("x"),
 		y("y"),
@@ -158,6 +159,42 @@ public class Plane extends main.proxies.Primitive
 	public final void seth(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Double h)
 	{
 		getMendixObject().setValue(context, MemberNames.h.toString(), h);
+	}
+
+	/**
+	 * @return value of doublesided
+	 */
+	public final java.lang.Boolean getdoublesided()
+	{
+		return getdoublesided(getContext());
+	}
+
+	/**
+	 * @param context
+	 * @return value of doublesided
+	 */
+	public final java.lang.Boolean getdoublesided(com.mendix.systemwideinterfaces.core.IContext context)
+	{
+		return (java.lang.Boolean) getMendixObject().getValue(context, MemberNames.doublesided.toString());
+	}
+
+	/**
+	 * Set value of doublesided
+	 * @param doublesided
+	 */
+	public final void setdoublesided(java.lang.Boolean doublesided)
+	{
+		setdoublesided(getContext(), doublesided);
+	}
+
+	/**
+	 * Set value of doublesided
+	 * @param context
+	 * @param doublesided
+	 */
+	public final void setdoublesided(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Boolean doublesided)
+	{
+		getMendixObject().setValue(context, MemberNames.doublesided.toString(), doublesided);
 	}
 
 	@java.lang.Override
