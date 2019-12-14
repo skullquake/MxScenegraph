@@ -142,10 +142,10 @@ require(
 						if(!this._datarendered){
 							new Promise((resolve,reject)=>{
 								//get camera
-								if(this._contextObj.getReference('Main.Scene_Camera')){
+								if(this._contextObj.getReference('SceneGraph.Scene_Camera')){
 									mx.data.get({
 										    guid:this._contextObj.getGuid(),
-										    path:'Main.Scene_Camera',
+										    path:'SceneGraph.Scene_Camera',
 										    filter:{
 											offset:0,
 											amount:1
@@ -186,7 +186,7 @@ require(
 												mx.data.get(
 													{
 														guid:this._contextObj.getGuid(),
-														path:'Main.Node_Scene',
+														path:'SceneGraph.Node_Scene',
 														filter:{
 															offset:0,
 															amount:4096
@@ -217,7 +217,7 @@ require(
 											new Promise((resolve,reject)=>{
 													mx.data.get({
 													    guid:obj_node.getGuid(),
-													    path:'Main.Primitive_Node',
+													    path:'SceneGraph.Primitive_Node',
 													    filter:{
 														offset:0,
 														amount:4096
@@ -244,7 +244,7 @@ require(
 													var rotz=obj_primitive.get('rotz')==null?0:obj_primitive.get('rotz');
 													var visible=obj_primitive.get('visible')==null?true:obj_primitive.get('visible');
 													switch(obj_primitive.getEntity()){
-														case 'Main.Line':
+														case 'SceneGraph.Line':
 															var x1=obj_primitive.get('x1');
 															var y1=obj_primitive.get('y1');
 															var z1=obj_primitive.get('z1');
@@ -274,7 +274,7 @@ require(
 															line.material=material;
 															line.visibility=visible;
 															break;
-														case 'Main.Plane':
+														case 'SceneGraph.Plane':
 															window.obj_primitive=obj_primitive;
 															var w=obj_primitive.get('w')==null?1:obj_primitive.get('w');
 															var h=obj_primitive.get('h')==null?1:obj_primitive.get('h');
@@ -308,7 +308,7 @@ require(
 															plane.material=material;
 															mx.data.get({
 																guid:obj_primitive.getGuid(),
-																path:'Main.Texture',
+																path:'SceneGraph.Texture',
 																filter:{
 																	offset:0,
 																	amount:1
@@ -360,7 +360,7 @@ require(
 															);
 															//--------------------------------------------------------------------------------
 															break;
-														case 'Main.Box':
+														case 'SceneGraph.Box':
 															console.error('Creating '+obj_primitive.getEntity())
 															var w=obj_primitive.get('w');
 															var h=obj_primitive.get('h');
@@ -426,7 +426,7 @@ require(
 															);
 															//--------------------------------------------------------------------------------
 															break;
-														case 'Main.Sphere':
+														case 'SceneGraph.Sphere':
 															console.error('Creating '+obj_primitive.getEntity())
 															var r=obj_primitive.get('r');
 															var doublesided=obj_primitive.get('doublesided')==null?true:obj_primitive.get('doublesided');
@@ -488,7 +488,7 @@ require(
 															);
 															//--------------------------------------------------------------------------------
 															break;
-														case 'Main.Text':
+														case 'SceneGraph.Text':
 															var sz=obj_primitive.get('sz')/10;
 															var val=obj_primitive.get('val');
 															var color=obj_primitive.get('color');

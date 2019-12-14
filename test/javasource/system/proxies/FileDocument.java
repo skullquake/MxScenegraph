@@ -75,14 +75,14 @@ public class FileDocument
 		if (com.mendix.core.Core.isSubClassOf("FSUtils.ArcEntry", mendixObject.getType()))
 			return fsutils.proxies.ArcEntry.initialize(context, mendixObject);
 
-		if (com.mendix.core.Core.isSubClassOf("Main.FileDocument", mendixObject.getType()))
-			return main.proxies.FileDocument.initialize(context, mendixObject);
+		if (com.mendix.core.Core.isSubClassOf("SceneGraph.FileDocument", mendixObject.getType()))
+			return scenegraph.proxies.FileDocument.initialize(context, mendixObject);
 
 		if (com.mendix.core.Core.isSubClassOf("System.Image", mendixObject.getType()))
 			return system.proxies.Image.initialize(context, mendixObject);
 
-		if (com.mendix.core.Core.isSubClassOf("Main.ModelFile", mendixObject.getType()))
-			return main.proxies.ModelFile.initialize(context, mendixObject);
+		if (com.mendix.core.Core.isSubClassOf("SceneGraph.ModelFile", mendixObject.getType()))
+			return scenegraph.proxies.ModelFile.initialize(context, mendixObject);
 
 		return new system.proxies.FileDocument(context, mendixObject);
 	}

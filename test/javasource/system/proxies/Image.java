@@ -65,8 +65,8 @@ public class Image extends system.proxies.FileDocument
 	 */
 	public static system.proxies.Image initialize(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject mendixObject)
 	{
-		if (com.mendix.core.Core.isSubClassOf("Main.Image", mendixObject.getType()))
-			return main.proxies.Image.initialize(context, mendixObject);
+		if (com.mendix.core.Core.isSubClassOf("SceneGraph.Image", mendixObject.getType()))
+			return scenegraph.proxies.Image.initialize(context, mendixObject);
 
 		return new system.proxies.Image(context, mendixObject);
 	}

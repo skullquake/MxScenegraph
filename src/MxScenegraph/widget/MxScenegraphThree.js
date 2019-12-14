@@ -121,7 +121,7 @@ require(
 						new Promise((resolve,reject)=>{
 								mx.data.get({
 								    guid:this._contextObj.getGuid(),
-								    path:'Main.Node_Scene',
+								    path:'SceneGraph.Node_Scene',
 								    filter:{
 									offset:0,
 									amount:4096
@@ -141,7 +141,7 @@ require(
 										new Promise((resolve,reject)=>{
 												mx.data.get({
 												    guid:obj_node.getGuid(),
-												    path:'Main.Primitive_Node',
+												    path:'SceneGraph.Primitive_Node',
 												    filter:{
 													offset:0,
 													amount:4096
@@ -173,7 +173,7 @@ require(
 												var roty=obj_primitive.get('roty');
 												var rotz=obj_primitive.get('rotz');
 												switch(obj_primitive.getEntity()){
-													case 'Main.Line':
+													case 'SceneGraph.Line':
 														var x1=obj_primitive.get('x1');
 														var y1=obj_primitive.get('y1');
 														var z1=obj_primitive.get('z1');
@@ -190,7 +190,7 @@ require(
 														var line = new THREE.Line( geometry, material );
 														this.scene.add( line );
 														break;
-													case 'Main.Plane':
+													case 'SceneGraph.Plane':
 														var w=obj_primitive.get('w');
 														var h=obj_primitive.get('h');
 														var geometry=new THREE.BoxGeometry(w,h,w);
@@ -207,7 +207,7 @@ require(
 														this.scene.add(plane);
 
 														break;
-													case 'Main.Box':
+													case 'SceneGraph.Box':
 														console.error('Creating '+obj_primitive.getEntity())
 														var w=obj_primitive.get('w');
 														var h=obj_primitive.get('h');
@@ -224,7 +224,7 @@ require(
 														cube.position.z = z;
 														this.scene.add(cube);
 														break;
-													case 'Main.Sphere':
+													case 'SceneGraph.Sphere':
 														console.error('Creating '+obj_primitive.getEntity())
 														var r=obj_primitive.get('r');
 														var geometry=new THREE.SphereGeometry(r,32,32);
