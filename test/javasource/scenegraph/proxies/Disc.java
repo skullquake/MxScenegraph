@@ -18,6 +18,7 @@ public class Disc extends scenegraph.proxies.Primitive
 	{
 		r("r"),
 		doublesided("doublesided"),
+		tesselation("tesselation"),
 		Name("Name"),
 		x("x"),
 		y("y"),
@@ -159,6 +160,42 @@ public class Disc extends scenegraph.proxies.Primitive
 	public final void setdoublesided(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Boolean doublesided)
 	{
 		getMendixObject().setValue(context, MemberNames.doublesided.toString(), doublesided);
+	}
+
+	/**
+	 * @return value of tesselation
+	 */
+	public final java.lang.Integer gettesselation()
+	{
+		return gettesselation(getContext());
+	}
+
+	/**
+	 * @param context
+	 * @return value of tesselation
+	 */
+	public final java.lang.Integer gettesselation(com.mendix.systemwideinterfaces.core.IContext context)
+	{
+		return (java.lang.Integer) getMendixObject().getValue(context, MemberNames.tesselation.toString());
+	}
+
+	/**
+	 * Set value of tesselation
+	 * @param tesselation
+	 */
+	public final void settesselation(java.lang.Integer tesselation)
+	{
+		settesselation(getContext(), tesselation);
+	}
+
+	/**
+	 * Set value of tesselation
+	 * @param context
+	 * @param tesselation
+	 */
+	public final void settesselation(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Integer tesselation)
+	{
+		getMendixObject().setValue(context, MemberNames.tesselation.toString(), tesselation);
 	}
 
 	@java.lang.Override

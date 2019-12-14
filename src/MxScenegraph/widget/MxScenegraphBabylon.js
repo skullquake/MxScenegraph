@@ -325,16 +325,64 @@ require(
 																	console.error("Could not retrieve objects:",e);
 																}
 															});
+														case 'SceneGraph.Disc':
+															window.obj_primitive=obj_primitive;
+															var r=obj_primitive.get('r')==null?1:obj_primitive.get('r');
+															var tesselation=obj_primitive.get('tesselation')==null?1:obj_primitive.get('tesselation');
+															var doublesided=obj_primitive.get('doublesided')==null?true:obj_primitive.get('doublesided');
+															var disc=BABYLON.MeshBuilder.CreateDisc(
+																"",
+																{
+																	tessellation:tesselation,
+																	radius:r
+																},
+																this.scene
+															);
+															disc.position=new BABYLON.Vector3(x,y,z);
+															disc.rotation.x=rotx;
+															disc.rotation.y=roty;
+															disc.rotation.z=rotz;
+															disc.visibility=visible;
+															var color=obj_primitive.get('color');
+															var _color=_tinycolor(color);
+															var material=new BABYLON.StandardMaterial(this.scene);
+															material.alpha=1;
+															material.diffuseColor=new BABYLON.Color3(
+																_color._r/255,
+																_color._g/255,
+																_color._b/255
+															);
+															disc.material=material;
+															mx.data.get({
+																guid:obj_primitive.getGuid(),
+																path:'SceneGraph.Texture',
+																filter:{
+																	offset:0,
+																	amount:1
+																},
+																callback:dojo.hitch(this,function(objs){
+																	if(objs.length>0){
+																		var url='/file?guid='+objs[0].getGuid()+'&cachebust='+(new Date().getTime());
+																		var mat = new BABYLON.StandardMaterial("",this.scene);
+																		mat.diffuseTexture = new BABYLON.Texture(url,this.scene);
+																		disc.material=mat;
+																	}else{}
+																}),
+																error:function(e){
+																	console.error("Could not retrieve objects:",e);
+																}
+															});
+
 															//--------------------------------------------------------------------------------
 															//attach userdata
 															//--------------------------------------------------------------------------------
-															plane.userdata={};
-															plane.userdata.mxobject=obj_primitive;
+															disc.userdata={};
+															disc.userdata.mxobject=obj_primitive;
 															//--------------------------------------------------------------------------------
 															//setup evt
 															//--------------------------------------------------------------------------------
-															plane.actionManager=new BABYLON.ActionManager(this.scene);
-															plane.actionManager.registerAction(
+															disc.actionManager=new BABYLON.ActionManager(this.scene);
+															disc.actionManager.registerAction(
 																new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger, 
 																dojo.hitch(this,function(event){
 																	console.log('clicked');
