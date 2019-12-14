@@ -23,6 +23,7 @@ public class Model extends main.proxies.Primitive
 		rotx("rotx"),
 		roty("roty"),
 		rotz("rotz"),
+		visible("visible"),
 		color("color"),
 		Model_ModelFile("Main.Model_ModelFile"),
 		Primitive_Node("Main.Primitive_Node"),

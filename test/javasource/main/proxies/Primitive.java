@@ -27,6 +27,7 @@ public class Primitive
 		rotx("rotx"),
 		roty("roty"),
 		rotz("rotz"),
+		visible("visible"),
 		color("color"),
 		Primitive_Node("Main.Primitive_Node"),
 		Selected("Main.Selected"),
@@ -80,6 +81,18 @@ public class Primitive
 		if (com.mendix.core.Core.isSubClassOf("Main.Box", mendixObject.getType()))
 			return main.proxies.Box.initialize(context, mendixObject);
 
+		if (com.mendix.core.Core.isSubClassOf("Main.Cylinder", mendixObject.getType()))
+			return main.proxies.Cylinder.initialize(context, mendixObject);
+
+		if (com.mendix.core.Core.isSubClassOf("Main.Disc", mendixObject.getType()))
+			return main.proxies.Disc.initialize(context, mendixObject);
+
+		if (com.mendix.core.Core.isSubClassOf("Main.IcoSphere", mendixObject.getType()))
+			return main.proxies.IcoSphere.initialize(context, mendixObject);
+
+		if (com.mendix.core.Core.isSubClassOf("Main.Lathe", mendixObject.getType()))
+			return main.proxies.Lathe.initialize(context, mendixObject);
+
 		if (com.mendix.core.Core.isSubClassOf("Main.Line", mendixObject.getType()))
 			return main.proxies.Line.initialize(context, mendixObject);
 
@@ -89,11 +102,17 @@ public class Primitive
 		if (com.mendix.core.Core.isSubClassOf("Main.Plane", mendixObject.getType()))
 			return main.proxies.Plane.initialize(context, mendixObject);
 
+		if (com.mendix.core.Core.isSubClassOf("Main.Polygon", mendixObject.getType()))
+			return main.proxies.Polygon.initialize(context, mendixObject);
+
 		if (com.mendix.core.Core.isSubClassOf("Main.Sphere", mendixObject.getType()))
 			return main.proxies.Sphere.initialize(context, mendixObject);
 
 		if (com.mendix.core.Core.isSubClassOf("Main.Text", mendixObject.getType()))
 			return main.proxies.Text.initialize(context, mendixObject);
+
+		if (com.mendix.core.Core.isSubClassOf("Main.Triangle", mendixObject.getType()))
+			return main.proxies.Triangle.initialize(context, mendixObject);
 
 		return new main.proxies.Primitive(context, mendixObject);
 	}
@@ -393,6 +412,42 @@ public class Primitive
 	public final void setrotz(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Double rotz)
 	{
 		getMendixObject().setValue(context, MemberNames.rotz.toString(), rotz);
+	}
+
+	/**
+	 * @return value of visible
+	 */
+	public final java.lang.Boolean getvisible()
+	{
+		return getvisible(getContext());
+	}
+
+	/**
+	 * @param context
+	 * @return value of visible
+	 */
+	public final java.lang.Boolean getvisible(com.mendix.systemwideinterfaces.core.IContext context)
+	{
+		return (java.lang.Boolean) getMendixObject().getValue(context, MemberNames.visible.toString());
+	}
+
+	/**
+	 * Set value of visible
+	 * @param visible
+	 */
+	public final void setvisible(java.lang.Boolean visible)
+	{
+		setvisible(getContext(), visible);
+	}
+
+	/**
+	 * Set value of visible
+	 * @param context
+	 * @param visible
+	 */
+	public final void setvisible(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Boolean visible)
+	{
+		getMendixObject().setValue(context, MemberNames.visible.toString(), visible);
 	}
 
 	/**

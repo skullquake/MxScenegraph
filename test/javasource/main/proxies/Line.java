@@ -26,6 +26,7 @@ public class Line extends main.proxies.Primitive
 		rotx("rotx"),
 		roty("roty"),
 		rotz("rotz"),
+		visible("visible"),
 		color("color"),
 		Primitive_Node("Main.Primitive_Node"),
 		Selected("Main.Selected"),
