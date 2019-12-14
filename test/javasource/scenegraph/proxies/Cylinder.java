@@ -16,8 +16,10 @@ public class Cylinder extends scenegraph.proxies.Primitive
 	 */
 	public enum MemberNames
 	{
-		r("r"),
+		d0("d0"),
+		d1("d1"),
 		h("h"),
+		tesselation("tesselation"),
 		doublesided("doublesided"),
 		Name("Name"),
 		x("x"),
@@ -91,39 +93,75 @@ public class Cylinder extends scenegraph.proxies.Primitive
 	}
 
 	/**
-	 * @return value of r
+	 * @return value of d0
 	 */
-	public final java.lang.Double getr()
+	public final java.lang.Double getd0()
 	{
-		return getr(getContext());
+		return getd0(getContext());
 	}
 
 	/**
 	 * @param context
-	 * @return value of r
+	 * @return value of d0
 	 */
-	public final java.lang.Double getr(com.mendix.systemwideinterfaces.core.IContext context)
+	public final java.lang.Double getd0(com.mendix.systemwideinterfaces.core.IContext context)
 	{
-		return (java.lang.Double) getMendixObject().getValue(context, MemberNames.r.toString());
+		return (java.lang.Double) getMendixObject().getValue(context, MemberNames.d0.toString());
 	}
 
 	/**
-	 * Set value of r
-	 * @param r
+	 * Set value of d0
+	 * @param d0
 	 */
-	public final void setr(java.lang.Double r)
+	public final void setd0(java.lang.Double d0)
 	{
-		setr(getContext(), r);
+		setd0(getContext(), d0);
 	}
 
 	/**
-	 * Set value of r
+	 * Set value of d0
 	 * @param context
-	 * @param r
+	 * @param d0
 	 */
-	public final void setr(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Double r)
+	public final void setd0(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Double d0)
 	{
-		getMendixObject().setValue(context, MemberNames.r.toString(), r);
+		getMendixObject().setValue(context, MemberNames.d0.toString(), d0);
+	}
+
+	/**
+	 * @return value of d1
+	 */
+	public final java.lang.Double getd1()
+	{
+		return getd1(getContext());
+	}
+
+	/**
+	 * @param context
+	 * @return value of d1
+	 */
+	public final java.lang.Double getd1(com.mendix.systemwideinterfaces.core.IContext context)
+	{
+		return (java.lang.Double) getMendixObject().getValue(context, MemberNames.d1.toString());
+	}
+
+	/**
+	 * Set value of d1
+	 * @param d1
+	 */
+	public final void setd1(java.lang.Double d1)
+	{
+		setd1(getContext(), d1);
+	}
+
+	/**
+	 * Set value of d1
+	 * @param context
+	 * @param d1
+	 */
+	public final void setd1(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Double d1)
+	{
+		getMendixObject().setValue(context, MemberNames.d1.toString(), d1);
 	}
 
 	/**
@@ -160,6 +198,42 @@ public class Cylinder extends scenegraph.proxies.Primitive
 	public final void seth(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Double h)
 	{
 		getMendixObject().setValue(context, MemberNames.h.toString(), h);
+	}
+
+	/**
+	 * @return value of tesselation
+	 */
+	public final java.lang.Integer gettesselation()
+	{
+		return gettesselation(getContext());
+	}
+
+	/**
+	 * @param context
+	 * @return value of tesselation
+	 */
+	public final java.lang.Integer gettesselation(com.mendix.systemwideinterfaces.core.IContext context)
+	{
+		return (java.lang.Integer) getMendixObject().getValue(context, MemberNames.tesselation.toString());
+	}
+
+	/**
+	 * Set value of tesselation
+	 * @param tesselation
+	 */
+	public final void settesselation(java.lang.Integer tesselation)
+	{
+		settesselation(getContext(), tesselation);
+	}
+
+	/**
+	 * Set value of tesselation
+	 * @param context
+	 * @param tesselation
+	 */
+	public final void settesselation(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Integer tesselation)
+	{
+		getMendixObject().setValue(context, MemberNames.tesselation.toString(), tesselation);
 	}
 
 	/**

@@ -111,6 +111,9 @@ public class Primitive
 		if (com.mendix.core.Core.isSubClassOf("SceneGraph.Text", mendixObject.getType()))
 			return scenegraph.proxies.Text.initialize(context, mendixObject);
 
+		if (com.mendix.core.Core.isSubClassOf("SceneGraph.Torus", mendixObject.getType()))
+			return scenegraph.proxies.Torus.initialize(context, mendixObject);
+
 		if (com.mendix.core.Core.isSubClassOf("SceneGraph.Triangle", mendixObject.getType()))
 			return scenegraph.proxies.Triangle.initialize(context, mendixObject);
 
