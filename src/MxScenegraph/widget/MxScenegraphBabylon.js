@@ -1035,6 +1035,105 @@ require(
 																}
 															});
 															break;
+														case 'SceneGraph.TiledGround':
+															console.info('Creating '+obj_primitive.getEntity())
+															var doublesided=obj_primitive.get('doublesided')==null?obj_primitive.get('doublesided'):false;
+															var xmin=Math.floor(obj_primitive.get('xmin')==null?-1:obj_primitive.get('xmin'));
+															var zmin=Math.floor(obj_primitive.get('zmin')==null?-1:obj_primitive.get('zmin'));
+															var xmax=Math.floor(obj_primitive.get('xmax')==null?1:obj_primitive.get('xmax'));
+															var zmax=Math.floor(obj_primitive.get('zmax')==null?1:obj_primitive.get('zmax'));
+															var subdivisions={
+																w:Math.floor(obj_primitive.get('subdivisions_w')==null?6:obj_primitive.get('subdivisions_w')>0?obj_primitive.get('subdivisions_w'):6),
+																h:Math.floor(obj_primitive.get('subdivisions_h')==null?6:obj_primitive.get('subdivisions_h')>0?obj_primitive.get('subdivisions_h'):6)
+															};
+															var precision={
+																w:Math.floor(obj_primitive.get('precision_w')==null?2:obj_primitive.get('precision_w')>0?obj_primitive.get('precision_w'):2),
+																h:Math.floor(obj_primitive.get('precision_h')==null?2:obj_primitive.get('precision_h')>0?obj_primitive.get('precision_h'):2)
+															};
+															var tiledground=BABYLON.MeshBuilder.CreateTiledGround(
+																"",
+																{
+																	doublesided:doublesided,
+																	xmin:xmin,
+																	zmin:zmin,
+																	xmax:xmax,
+																	zmin:zmin,
+																	subdivisions:subdivisions,
+																	precision:precision,
+																	sideOrientation:doublesided?BABYLON.Mesh.DOUBLESIDE:BABYLON.Mesh.FRONTSIDE
+																},
+																this.scene
+															);
+															tiledground.position = new BABYLON.Vector3(x,y,z);
+															var color=obj_primitive.get('color');
+															var _color=_tinycolor(color);
+															var material=new BABYLON.StandardMaterial(this.scene);
+															material.alpha=1;
+															material.diffuseColor=new BABYLON.Color3(
+																_color._r/255,
+																_color._g/255,
+																_color._b/255
+															);
+															tiledground.material=material;
+															mx.data.get({
+																guid:obj_primitive.getGuid(),
+																path:'SceneGraph.Texture',
+																filter:{
+																	offset:0,
+																	amount:1
+																},
+																callback:dojo.hitch(this,function(objs){
+																	if(objs.length>0){
+																		var url='/file?guid='+objs[0].getGuid()+'&cachebust='+(new Date().getTime());
+																		var mat = new BABYLON.StandardMaterial("",this.scene);
+																		mat.diffuseTexture = new BABYLON.Texture(url,this.scene);
+																		tiledground.material=mat;
+																	}else{}
+																}),
+																error:function(e){
+																	console.error("Could not retrieve objects:",e);
+																}
+															});
+															tiledground.rotation.x=rotx;
+															tiledground.rotation.y=roty;
+															tiledground.rotation.z=rotz;
+															tiledground.visibility=visible;
+															//--------------------------------------------------------------------------------
+															//attach userdata
+															//--------------------------------------------------------------------------------
+															tiledground.userdata={};
+															tiledground.userdata.mxobject=obj_primitive;
+															//--------------------------------------------------------------------------------
+															//setup evt
+															//--------------------------------------------------------------------------------
+															tiledground.actionManager=new BABYLON.ActionManager(this.scene);
+															tiledground.actionManager.registerAction(
+																new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger, 
+																dojo.hitch(this,function(event){
+																	console.log('clicked');
+																	var pickedMesh=event.meshUnderPointer; 
+																	if(
+																		pickedMesh!=null&&
+																		pickedMesh.userdata!=null&&
+																		pickedMesh.userdata.mxobject!=null&&
+																		pickedMesh.userdata.mxobject.getGuid()!=null&&
+																		this.str_primitive_click_mf!=null&&
+																		this.str_primitive_click_mf!=''
+																	){
+																		this._execMf(
+																			this.str_primitive_click_mf,
+																			pickedMesh.userdata.mxobject.getGuid(),
+																			dojo.hitch(this,function(){
+																			})
+																		);
+																		//var hl = new BABYLON.HighlightLayer("hl1", this.scene);
+																		//hl.addMesh(pickedMesh, BABYLON.Color3.Green());
+																	}
+																}))
+															);
+															//--------------------------------------------------------------------------------
+															break;
+
 														case 'SceneGraph.Text':
 															var sz=obj_primitive.get('sz')/10;
 															var val=obj_primitive.get('val');
