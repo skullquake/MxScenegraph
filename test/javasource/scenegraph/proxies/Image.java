@@ -22,7 +22,8 @@ public class Image extends system.proxies.Image
 		DeleteAfterDownload("DeleteAfterDownload"),
 		Contents("Contents"),
 		HasContents("HasContents"),
-		Size("Size");
+		Size("Size"),
+		HeightMap("SceneGraph.HeightMap");
 
 		private java.lang.String metaName;
 
@@ -80,6 +81,49 @@ public class Image extends system.proxies.Image
 		for (com.mendix.systemwideinterfaces.core.IMendixObject obj : com.mendix.core.Core.retrieveXPathQuery(context, "//SceneGraph.Image" + xpathConstraint))
 			result.add(scenegraph.proxies.Image.initialize(context, obj));
 		return result;
+	}
+
+	/**
+	 * @return value of HeightMap
+	 */
+	public final scenegraph.proxies.HeightMapGround getHeightMap() throws com.mendix.core.CoreException
+	{
+		return getHeightMap(getContext());
+	}
+
+	/**
+	 * @param context
+	 * @return value of HeightMap
+	 */
+	public final scenegraph.proxies.HeightMapGround getHeightMap(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
+	{
+		scenegraph.proxies.HeightMapGround result = null;
+		com.mendix.systemwideinterfaces.core.IMendixIdentifier identifier = getMendixObject().getValue(context, MemberNames.HeightMap.toString());
+		if (identifier != null)
+			result = scenegraph.proxies.HeightMapGround.load(context, identifier);
+		return result;
+	}
+
+	/**
+	 * Set value of HeightMap
+	 * @param heightmap
+	 */
+	public final void setHeightMap(scenegraph.proxies.HeightMapGround heightmap)
+	{
+		setHeightMap(getContext(), heightmap);
+	}
+
+	/**
+	 * Set value of HeightMap
+	 * @param context
+	 * @param heightmap
+	 */
+	public final void setHeightMap(com.mendix.systemwideinterfaces.core.IContext context, scenegraph.proxies.HeightMapGround heightmap)
+	{
+		if (heightmap == null)
+			getMendixObject().setValue(context, MemberNames.HeightMap.toString(), null);
+		else
+			getMendixObject().setValue(context, MemberNames.HeightMap.toString(), heightmap.getMendixObject().getId());
 	}
 
 	@java.lang.Override

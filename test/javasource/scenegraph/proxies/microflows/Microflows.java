@@ -79,6 +79,33 @@ public class Microflows
 			throw new MendixRuntimeException(e);
 		}
 	}
+	public static void ivk_heightmapground_edit_heightmap(IContext context, scenegraph.proxies.HeightMapGround _obj_primitive)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			params.put("obj_primitive", _obj_primitive == null ? null : _obj_primitive.getMendixObject());
+			Core.execute(context, "SceneGraph.ivk_heightmapground_edit_heightmap", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
+	public static void ivk_heightmapground_select_heightmap(IContext context, scenegraph.proxies.HeightMapGround _obj_heightmapground, scenegraph.proxies.Image _obj_image)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			params.put("obj_heightmapground", _obj_heightmapground == null ? null : _obj_heightmapground.getMendixObject());
+			params.put("obj_image", _obj_image == null ? null : _obj_image.getMendixObject());
+			Core.execute(context, "SceneGraph.ivk_heightmapground_select_heightmap", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
 	public static void ivk_image_drop(IContext context)
 	{
 		try

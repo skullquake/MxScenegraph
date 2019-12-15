@@ -410,7 +410,7 @@ require(
 															//--------------------------------------------------------------------------------
 															break;
 														case 'SceneGraph.Box':
-															console.error('Creating '+obj_primitive.getEntity())
+															console.info('Creating '+obj_primitive.getEntity())
 															var w=obj_primitive.get('w');
 															var h=obj_primitive.get('h');
 															var d=obj_primitive.get('d');
@@ -496,7 +496,7 @@ require(
 															//--------------------------------------------------------------------------------
 															break;
 														case 'SceneGraph.Sphere':
-															console.error('Creating '+obj_primitive.getEntity())
+															console.info('Creating '+obj_primitive.getEntity())
 															var r=obj_primitive.get('r');
 															var doublesided=obj_primitive.get('doublesided')==null?true:obj_primitive.get('doublesided');
 															var sphere=BABYLON.MeshBuilder.CreateSphere(
@@ -577,7 +577,7 @@ require(
 															//--------------------------------------------------------------------------------
 															break;
 														case 'SceneGraph.Cylinder':
-															console.error('Creating '+obj_primitive.getEntity())
+															console.info('Creating '+obj_primitive.getEntity())
 															var d0=obj_primitive.get('d0')==null?1:obj_primitive.get('d0');
 															var d1=obj_primitive.get('d1')==null?1:obj_primitive.get('d1');
 															var h=obj_primitive.get('h')==null?2:obj_primitive.get('h');
@@ -663,7 +663,7 @@ require(
 															//--------------------------------------------------------------------------------
 															break;
 														case 'SceneGraph.Torus':
-															console.error('Creating '+obj_primitive.getEntity())
+															console.info('Creating '+obj_primitive.getEntity())
 															var d=obj_primitive.get('d')==null?1:obj_primitive.get('d')>0?obj_primitive.get('d'):1;
 															var thickness=obj_primitive.get('thickness')==null?0.5:obj_primitive.get('thickness')>0?obj_primitive.get('thickness'):d/2;
 															var tessellation=obj_primitive.get('tessellation')==null?16:obj_primitive.get('tessellation')>0?obj_primitive.get('tessellation'):16;
@@ -749,7 +749,7 @@ require(
 															//--------------------------------------------------------------------------------
 															break;
 														case 'SceneGraph.Knot':
-															console.error('Creating '+obj_primitive.getEntity())
+															console.info('Creating '+obj_primitive.getEntity())
 															var radius=obj_primitive.get('radius')==null?1:obj_primitive.get('radius')>0?obj_primitive.get('radius'):2;
 															var tube=obj_primitive.get('tube')==null?1:obj_primitive.get('tube')>0?obj_primitive.get('tube'):0.5;
 															var radialSegments=obj_primitive.get('radialSegments')==null?1:obj_primitive.get('radialSegments')>0?obj_primitive.get('radialSegments'):32;
@@ -840,7 +840,7 @@ require(
 															//--------------------------------------------------------------------------------
 															break;
 														case 'SceneGraph.Ground':
-															console.error('Creating '+obj_primitive.getEntity())
+															console.info('Creating '+obj_primitive.getEntity())
 															var width=obj_primitive.get('width')==null?1:obj_primitive.get('width')>0?obj_primitive.get('width'):1;
 															var height=obj_primitive.get('height')==null?1:obj_primitive.get('height')>0?obj_primitive.get('height'):1;
 															var subdivisions=obj_primitive.get('subdivisions')==null?1:obj_primitive.get('subdivisions')>0?obj_primitive.get('subdivisions'):32;
@@ -923,6 +923,117 @@ require(
 																}))
 															);
 															//--------------------------------------------------------------------------------
+															break;
+														case 'SceneGraph.HeightMapGround':
+															mx.data.get({
+																guid:obj_primitive.getGuid(),
+																path:'SceneGraph.HeightMap',
+																filter:{
+																	offset:0,
+																	amount:1
+																},
+																callback:dojo.hitch(this,function(objs){
+																	if(objs.length>0){
+																		var urlheightmap='/file?guid='+objs[0].getGuid()+'&cachebust='+(new Date().getTime());
+																		//var mat = new BABYLON.StandardMaterial("",this.scene);
+																		//mat.diffuseTexture = new BABYLON.Texture(url,this.scene);
+																		//heightmapground.material=mat;
+
+																		console.info('Creating '+obj_primitive.getEntity())
+																		var width=obj_primitive.get('width')==null?1:obj_primitive.get('width')>0?obj_primitive.get('width'):1;
+																		var height=obj_primitive.get('height')==null?1:obj_primitive.get('height')>0?obj_primitive.get('height'):1;
+																		var subdivisions=obj_primitive.get('subdivisions')==null?1:obj_primitive.get('subdivisions')>0?obj_primitive.get('subdivisions'):32;
+																		var doublesided=obj_primitive.get('doublesided')==null?obj_primitive.get('doublesided'):false;
+																		//var ground = BABYLON.MeshBuilder.CreateGroundFromHeightMap("gdhm", url, {width: 6, subdivisions: 4}, scene);
+																		var heightmapground=BABYLON.MeshBuilder.CreateGroundFromHeightMap(
+																			"",
+																			urlheightmap,
+																			{
+																				width:width,
+																				height:height,
+																				subdivisions:6,//subdivisions, borks
+																				sideOrientation:doublesided?BABYLON.Mesh.DOUBLESIDE:BABYLON.Mesh.FRONTSIDE
+																			},
+																			this.scene
+																		);
+																		heightmapground.position = new BABYLON.Vector3(x,y,z);
+																		var color=obj_primitive.get('color');
+																		var _color=_tinycolor(color);
+																		var material=new BABYLON.StandardMaterial(this.scene);
+																		material.alpha=1;
+																		material.diffuseColor=new BABYLON.Color3(
+																			_color._r/255,
+																			_color._g/255,
+																			_color._b/255
+																		);
+																		heightmapground.material=material;
+																		mx.data.get({
+																			guid:obj_primitive.getGuid(),
+																			path:'SceneGraph.Texture',
+																			filter:{
+																				offset:0,
+																				amount:1
+																			},
+																			callback:dojo.hitch(this,function(objs){
+																				if(objs.length>0){
+																					var url='/file?guid='+objs[0].getGuid()+'&cachebust='+(new Date().getTime());
+																					var mat = new BABYLON.StandardMaterial("",this.scene);
+																					mat.diffuseTexture = new BABYLON.Texture(url,this.scene);
+																					heightmapground.material=mat;
+																				}else{}
+																			}),
+																			error:function(e){
+																				console.error("Could not retrieve objects:",e);
+																			}
+																		});
+																		heightmapground.rotation.x=rotx;
+																		heightmapground.rotation.y=roty;
+																		heightmapground.rotation.z=rotz;
+																		heightmapground.visibility=visible;
+																		//--------------------------------------------------------------------------------
+																		//attach userdata
+																		//--------------------------------------------------------------------------------
+																		heightmapground.userdata={};
+																		heightmapground.userdata.mxobject=obj_primitive;
+																		//--------------------------------------------------------------------------------
+																		//setup evt
+																		//--------------------------------------------------------------------------------
+																		heightmapground.actionManager=new BABYLON.ActionManager(this.scene);
+																		heightmapground.actionManager.registerAction(
+																			new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger, 
+																			dojo.hitch(this,function(event){
+																				console.log('clicked');
+																				var pickedMesh=event.meshUnderPointer; 
+																				if(
+																					pickedMesh!=null&&
+																					pickedMesh.userdata!=null&&
+																					pickedMesh.userdata.mxobject!=null&&
+																					pickedMesh.userdata.mxobject.getGuid()!=null&&
+																					this.str_primitive_click_mf!=null&&
+																					this.str_primitive_click_mf!=''
+																				){
+																					this._execMf(
+																						this.str_primitive_click_mf,
+																						pickedMesh.userdata.mxobject.getGuid(),
+																						dojo.hitch(this,function(){
+																						})
+																					);
+																					//var hl = new BABYLON.HighlightLayer("hl1", this.scene);
+																					//hl.addMesh(pickedMesh, BABYLON.Color3.Green());
+																				}
+																			}))
+																		);
+																		//--------------------------------------------------------------------------------
+
+
+																	}else{
+																		console.error('Not Creating '+obj_primitive.getEntity()+': No heightmap')
+																	}
+																}),
+																error:function(e){
+																	console.error("Could not retrieve objects:",e);
+																}
+															});
 															break;
 														case 'SceneGraph.Text':
 															var sz=obj_primitive.get('sz')/10;
