@@ -16,10 +16,10 @@ public class Ground extends scenegraph.proxies.Primitive
 	 */
 	public enum MemberNames
 	{
-		doublesided("doublesided"),
 		width("width"),
 		height("height"),
 		subdivisions("subdivisions"),
+		doublesided("doublesided"),
 		Name("Name"),
 		x("x"),
 		y("y"),
@@ -89,42 +89,6 @@ public class Ground extends scenegraph.proxies.Primitive
 		for (com.mendix.systemwideinterfaces.core.IMendixObject obj : com.mendix.core.Core.retrieveXPathQuery(context, "//SceneGraph.Ground" + xpathConstraint))
 			result.add(scenegraph.proxies.Ground.initialize(context, obj));
 		return result;
-	}
-
-	/**
-	 * @return value of doublesided
-	 */
-	public final java.lang.Boolean getdoublesided()
-	{
-		return getdoublesided(getContext());
-	}
-
-	/**
-	 * @param context
-	 * @return value of doublesided
-	 */
-	public final java.lang.Boolean getdoublesided(com.mendix.systemwideinterfaces.core.IContext context)
-	{
-		return (java.lang.Boolean) getMendixObject().getValue(context, MemberNames.doublesided.toString());
-	}
-
-	/**
-	 * Set value of doublesided
-	 * @param doublesided
-	 */
-	public final void setdoublesided(java.lang.Boolean doublesided)
-	{
-		setdoublesided(getContext(), doublesided);
-	}
-
-	/**
-	 * Set value of doublesided
-	 * @param context
-	 * @param doublesided
-	 */
-	public final void setdoublesided(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Boolean doublesided)
-	{
-		getMendixObject().setValue(context, MemberNames.doublesided.toString(), doublesided);
 	}
 
 	/**
@@ -233,6 +197,42 @@ public class Ground extends scenegraph.proxies.Primitive
 	public final void setsubdivisions(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Integer subdivisions)
 	{
 		getMendixObject().setValue(context, MemberNames.subdivisions.toString(), subdivisions);
+	}
+
+	/**
+	 * @return value of doublesided
+	 */
+	public final java.lang.Boolean getdoublesided()
+	{
+		return getdoublesided(getContext());
+	}
+
+	/**
+	 * @param context
+	 * @return value of doublesided
+	 */
+	public final java.lang.Boolean getdoublesided(com.mendix.systemwideinterfaces.core.IContext context)
+	{
+		return (java.lang.Boolean) getMendixObject().getValue(context, MemberNames.doublesided.toString());
+	}
+
+	/**
+	 * Set value of doublesided
+	 * @param doublesided
+	 */
+	public final void setdoublesided(java.lang.Boolean doublesided)
+	{
+		setdoublesided(getContext(), doublesided);
+	}
+
+	/**
+	 * Set value of doublesided
+	 * @param context
+	 * @param doublesided
+	 */
+	public final void setdoublesided(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Boolean doublesided)
+	{
+		getMendixObject().setValue(context, MemberNames.doublesided.toString(), doublesided);
 	}
 
 	@java.lang.Override

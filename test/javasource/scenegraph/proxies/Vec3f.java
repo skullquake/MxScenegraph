@@ -24,7 +24,8 @@ public class Vec3f
 		y("y"),
 		z("z"),
 		Vec3f_Lathe("SceneGraph.Vec3f_Lathe"),
-		Vec3f_Polygon("SceneGraph.Vec3f_Polygon");
+		Vec3f_Polygon("SceneGraph.Vec3f_Polygon"),
+		Vec3f_Line("SceneGraph.Vec3f_Line");
 
 		private java.lang.String metaName;
 
@@ -311,6 +312,49 @@ public class Vec3f
 			getMendixObject().setValue(context, MemberNames.Vec3f_Polygon.toString(), null);
 		else
 			getMendixObject().setValue(context, MemberNames.Vec3f_Polygon.toString(), vec3f_polygon.getMendixObject().getId());
+	}
+
+	/**
+	 * @return value of Vec3f_Line
+	 */
+	public final scenegraph.proxies.Line getVec3f_Line() throws com.mendix.core.CoreException
+	{
+		return getVec3f_Line(getContext());
+	}
+
+	/**
+	 * @param context
+	 * @return value of Vec3f_Line
+	 */
+	public final scenegraph.proxies.Line getVec3f_Line(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
+	{
+		scenegraph.proxies.Line result = null;
+		com.mendix.systemwideinterfaces.core.IMendixIdentifier identifier = getMendixObject().getValue(context, MemberNames.Vec3f_Line.toString());
+		if (identifier != null)
+			result = scenegraph.proxies.Line.load(context, identifier);
+		return result;
+	}
+
+	/**
+	 * Set value of Vec3f_Line
+	 * @param vec3f_line
+	 */
+	public final void setVec3f_Line(scenegraph.proxies.Line vec3f_line)
+	{
+		setVec3f_Line(getContext(), vec3f_line);
+	}
+
+	/**
+	 * Set value of Vec3f_Line
+	 * @param context
+	 * @param vec3f_line
+	 */
+	public final void setVec3f_Line(com.mendix.systemwideinterfaces.core.IContext context, scenegraph.proxies.Line vec3f_line)
+	{
+		if (vec3f_line == null)
+			getMendixObject().setValue(context, MemberNames.Vec3f_Line.toString(), null);
+		else
+			getMendixObject().setValue(context, MemberNames.Vec3f_Line.toString(), vec3f_line.getMendixObject().getId());
 	}
 
 	/**

@@ -245,6 +245,8 @@ require(
 													var visible=obj_primitive.get('visible')==null?true:obj_primitive.get('visible');
 													switch(obj_primitive.getEntity()){
 														case 'SceneGraph.Line':
+															/*
+															console.info('Creating '+obj_primitive.getEntity())
 															var x1=obj_primitive.get('x1');
 															var y1=obj_primitive.get('y1');
 															var z1=obj_primitive.get('z1');
@@ -273,9 +275,61 @@ require(
 															line.rotation.z=rotz;
 															line.material=material;
 															line.visibility=visible;
+															*/
+															mx.data.get({
+																guid:obj_primitive.getGuid(),
+																path:'SceneGraph.Vec3f_Line',
+																filter:{
+																	offset:0,
+																	amount:4096
+																},
+																callback:dojo.hitch(this,function(arr_vec3f){
+																	if(arr_vec3f.length>0){
+																		if(arr_vec3f.length>1){
+																			console.info('Creating '+obj_primitive.getEntity());
+																			var arr_p=[];
+																			arr_vec3f.forEach(dojo.hitch(this,function(obj_vec3f,obj_vec3f_idx){
+																				var x=obj_vec3f.get('x');
+																				var y=obj_vec3f.get('y');
+																				var z=obj_vec3f.get('z');
+																				arr_p.push(new BABYLON.Vector3(x,y,z));
+																			}));
+																			var line=BABYLON.MeshBuilder.CreateLines(
+																				"lines",
+																				{
+																					points:arr_p
+																				},
+																				this.scene
+																			);
+																			var color=obj_primitive.get('color');
+																			var _color=_tinycolor(color);
+																			var material=new BABYLON.StandardMaterial(this.scene);
+																			material.alpha=1;
+																			material.diffuseColor=new BABYLON.Color3(
+																				_color._r/255,
+																				_color._g/255,
+																				_color._b/255
+																			);
+																			line.rotation.x=rotx;
+																			line.rotation.y=roty;
+																			line.rotation.z=rotz;
+																			line.material=material;
+																			line.visibility=visible;
+																		}else{
+																			console.info('Not Creating '+obj_primitive.getEntity()+": Invalid number of points")
+																		}
+																	}else{
+																		console.info('Not Creating '+obj_primitive.getEntity()+": No points")
+																	}
+																}),
+																error:function(e){
+																	console.error("Could not retrieve objects:",e);
+																}
+															});
+
 															break;
 														case 'SceneGraph.Plane':
-															window.obj_primitive=obj_primitive;
+															console.info('Creating '+obj_primitive.getEntity())
 															var w=obj_primitive.get('w')==null?1:obj_primitive.get('w');
 															var h=obj_primitive.get('h')==null?1:obj_primitive.get('h');
 															var doublesided=obj_primitive.get('doublesided')==null?true:obj_primitive.get('doublesided');
@@ -326,7 +380,7 @@ require(
 																}
 															});
 														case 'SceneGraph.Disc':
-															window.obj_primitive=obj_primitive;
+															console.info('Creating '+obj_primitive.getEntity())
 															var r=obj_primitive.get('r')==null?1:obj_primitive.get('r');
 															var tesselation=obj_primitive.get('tesselation')==null?1:obj_primitive.get('tesselation');
 															var doublesided=obj_primitive.get('doublesided')==null?true:obj_primitive.get('doublesided');
