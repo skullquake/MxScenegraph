@@ -328,6 +328,7 @@ require(
 																				},
 																				this.scene
 																			);
+																			polygon.position=new BABYLON.Vector3(x,y,z);
 																			var color=obj_primitive.get('color');
 																			var _color=_tinycolor(color);
 																			var material=new BABYLON.StandardMaterial(this.scene);
