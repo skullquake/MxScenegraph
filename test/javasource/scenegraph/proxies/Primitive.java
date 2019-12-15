@@ -87,8 +87,14 @@ public class Primitive
 		if (com.mendix.core.Core.isSubClassOf("SceneGraph.Disc", mendixObject.getType()))
 			return scenegraph.proxies.Disc.initialize(context, mendixObject);
 
+		if (com.mendix.core.Core.isSubClassOf("SceneGraph.Ground", mendixObject.getType()))
+			return scenegraph.proxies.Ground.initialize(context, mendixObject);
+
 		if (com.mendix.core.Core.isSubClassOf("SceneGraph.IcoSphere", mendixObject.getType()))
 			return scenegraph.proxies.IcoSphere.initialize(context, mendixObject);
+
+		if (com.mendix.core.Core.isSubClassOf("SceneGraph.Knot", mendixObject.getType()))
+			return scenegraph.proxies.Knot.initialize(context, mendixObject);
 
 		if (com.mendix.core.Core.isSubClassOf("SceneGraph.Lathe", mendixObject.getType()))
 			return scenegraph.proxies.Lathe.initialize(context, mendixObject);

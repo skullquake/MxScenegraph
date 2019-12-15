@@ -537,7 +537,6 @@ require(
 																	console.error("Could not retrieve objects:",e);
 																}
 															});
-
 															sphere.rotation.x=rotx;
 															sphere.rotation.y=roty;
 															sphere.rotation.z=rotz;
@@ -624,7 +623,6 @@ require(
 																	console.error("Could not retrieve objects:",e);
 																}
 															});
-
 															cylinder.rotation.x=rotx;
 															cylinder.rotation.y=roty;
 															cylinder.rotation.z=rotz;
@@ -750,6 +748,98 @@ require(
 															);
 															//--------------------------------------------------------------------------------
 															break;
+														case 'SceneGraph.Knot':
+															console.error('Creating '+obj_primitive.getEntity())
+															var radius=obj_primitive.get('radius')==null?1:obj_primitive.get('radius')>0?obj_primitive.get('radius'):2;
+															var tube=obj_primitive.get('tube')==null?1:obj_primitive.get('tube')>0?obj_primitive.get('tube'):0.5;
+															var radialSegments=obj_primitive.get('radialSegments')==null?1:obj_primitive.get('radialSegments')>0?obj_primitive.get('radialSegments'):32;
+															var tubularSegments=obj_primitive.get('tubularSegments')==null?1:obj_primitive.get('tubularSegments')>0?obj_primitive.get('tubularSegments'):32;
+															var p=obj_primitive.get('p')==null?1:obj_primitive.get('p')>0?obj_primitive.get('p'):2;
+															var q=obj_primitive.get('q')==null?1:obj_primitive.get('q')>0?obj_primitive.get('q'):3;
+															var doublesided=obj_primitive.get('doublesided')==null?obj_primitive.get('doublesided'):false;
+															var knot=BABYLON.MeshBuilder.CreateTorusKnot(
+																"",
+																{
+																	radius:radius,
+																	tube:tube,
+																	radialSegments:radialSegments,
+																	tubularSegments:tubularSegments,
+																	p:p,
+																	q:q,
+																	sideOrientation:doublesided?BABYLON.Mesh.DOUBLESIDE:BABYLON.Mesh.FRONTSIDE
+																},
+																this.scene
+															);
+															knot.position = new BABYLON.Vector3(x,y,z);
+															var color=obj_primitive.get('color');
+															var _color=_tinycolor(color);
+															var material=new BABYLON.StandardMaterial(this.scene);
+															material.alpha=1;
+															material.diffuseColor=new BABYLON.Color3(
+																_color._r/255,
+																_color._g/255,
+																_color._b/255
+															);
+															knot.material=material;
+															mx.data.get({
+																guid:obj_primitive.getGuid(),
+																path:'SceneGraph.Texture',
+																filter:{
+																	offset:0,
+																	amount:1
+																},
+																callback:dojo.hitch(this,function(objs){
+																	if(objs.length>0){
+																		var url='/file?guid='+objs[0].getGuid()+'&cachebust='+(new Date().getTime());
+																		var mat = new BABYLON.StandardMaterial("",this.scene);
+																		mat.diffuseTexture = new BABYLON.Texture(url,this.scene);
+																		knot.material=mat;
+																	}else{}
+																}),
+																error:function(e){
+																	console.error("Could not retrieve objects:",e);
+																}
+															});
+															knot.rotation.x=rotx;
+															knot.rotation.y=roty;
+															knot.rotation.z=rotz;
+															knot.visibility=visible;
+															//--------------------------------------------------------------------------------
+															//attach userdata
+															//--------------------------------------------------------------------------------
+															knot.userdata={};
+															knot.userdata.mxobject=obj_primitive;
+															//--------------------------------------------------------------------------------
+															//setup evt
+															//--------------------------------------------------------------------------------
+															knot.actionManager=new BABYLON.ActionManager(this.scene);
+															knot.actionManager.registerAction(
+																new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger, 
+																dojo.hitch(this,function(event){
+																	console.log('clicked');
+																	var pickedMesh=event.meshUnderPointer; 
+																	if(
+																		pickedMesh!=null&&
+																		pickedMesh.userdata!=null&&
+																		pickedMesh.userdata.mxobject!=null&&
+																		pickedMesh.userdata.mxobject.getGuid()!=null&&
+																		this.str_primitive_click_mf!=null&&
+																		this.str_primitive_click_mf!=''
+																	){
+																		this._execMf(
+																			this.str_primitive_click_mf,
+																			pickedMesh.userdata.mxobject.getGuid(),
+																			dojo.hitch(this,function(){
+																			})
+																		);
+																		//var hl = new BABYLON.HighlightLayer("hl1", this.scene);
+																		//hl.addMesh(pickedMesh, BABYLON.Color3.Green());
+																	}
+																}))
+															);
+															//--------------------------------------------------------------------------------
+															break;
+
 														case 'SceneGraph.Text':
 															var sz=obj_primitive.get('sz')/10;
 															var val=obj_primitive.get('val');
