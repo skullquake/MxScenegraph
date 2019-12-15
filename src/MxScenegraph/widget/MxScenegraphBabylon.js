@@ -942,7 +942,7 @@ require(
 																		console.info('Creating '+obj_primitive.getEntity())
 																		var width=obj_primitive.get('width')==null?1:obj_primitive.get('width')>0?obj_primitive.get('width'):1;
 																		var height=obj_primitive.get('height')==null?1:obj_primitive.get('height')>0?obj_primitive.get('height'):1;
-																		var subdivisions=obj_primitive.get('subdivisions')==null?1:obj_primitive.get('subdivisions')>0?obj_primitive.get('subdivisions'):32;
+																		var subdivisions=Math.floor(obj_primitive.get('subdivisions')==null?1:obj_primitive.get('subdivisions')>0?obj_primitive.get('subdivisions'):32);
 																		var doublesided=obj_primitive.get('doublesided')==null?obj_primitive.get('doublesided'):false;
 																		//var ground = BABYLON.MeshBuilder.CreateGroundFromHeightMap("gdhm", url, {width: 6, subdivisions: 4}, scene);
 																		var heightmapground=BABYLON.MeshBuilder.CreateGroundFromHeightMap(
@@ -951,7 +951,7 @@ require(
 																			{
 																				width:width,
 																				height:height,
-																				subdivisions:6,//subdivisions, borks
+																				subdivisions:subdivisions,// borks
 																				sideOrientation:doublesided?BABYLON.Mesh.DOUBLESIDE:BABYLON.Mesh.FRONTSIDE
 																			},
 																			this.scene
