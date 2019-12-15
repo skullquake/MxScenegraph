@@ -245,37 +245,6 @@ require(
 													var visible=obj_primitive.get('visible')==null?true:obj_primitive.get('visible');
 													switch(obj_primitive.getEntity()){
 														case 'SceneGraph.Line':
-															/*
-															console.info('Creating '+obj_primitive.getEntity())
-															var x1=obj_primitive.get('x1');
-															var y1=obj_primitive.get('y1');
-															var z1=obj_primitive.get('z1');
-															var arr_p=[
-																new BABYLON.Vector3(x,y,z),
-																new BABYLON.Vector3(x1,y1,z1)
-															];
-															var line=BABYLON.MeshBuilder.CreateLines(
-																"lines",
-																{
-																	points:arr_p
-																},
-																this.scene
-															);
-															var color=obj_primitive.get('color');
-															var _color=_tinycolor(color);
-															var material=new BABYLON.StandardMaterial(this.scene);
-															material.alpha=1;
-															material.diffuseColor=new BABYLON.Color3(
-																_color._r/255,
-																_color._g/255,
-																_color._b/255
-															);
-															line.rotation.x=rotx;
-															line.rotation.y=roty;
-															line.rotation.z=rotz;
-															line.material=material;
-															line.visibility=visible;
-															*/
 															mx.data.get({
 																guid:obj_primitive.getGuid(),
 																path:'SceneGraph.Vec3f_Line',
@@ -328,6 +297,118 @@ require(
 															});
 
 															break;
+														case 'SceneGraph.Polygon':
+															mx.data.get({
+																guid:obj_primitive.getGuid(),
+																path:'SceneGraph.Vec3f_Polygon',
+																filter:{
+																	offset:0,
+																	amount:4096
+																},
+																callback:dojo.hitch(this,function(arr_vec3f){
+																	if(arr_vec3f.length>0){
+																		if(arr_vec3f.length>2){
+																			console.info('Creating '+obj_primitive.getEntity());
+																			var shape=[];
+																			console.log('------------');
+																			arr_vec3f.forEach(dojo.hitch(this,function(obj_vec3f,obj_vec3f_idx){
+																				var x=Number(obj_vec3f.get('x'));
+																				var y=Number(obj_vec3f.get('y'));
+																				var z=Number(obj_vec3f.get('z'));
+																				shape.push(new BABYLON.Vector3(x,y,z));
+																			}));
+																			console.log('------------');
+																			var doublesided=obj_primitive.get('doublesided')==null?true:obj_primitive.get('doublesided');
+																			var polygon=BABYLON.MeshBuilder.CreatePolygon(
+																				"polygon",
+																				{
+																					shape:shape,
+																					holes:[],
+																					sideOrientation:doublesided?BABYLON.Mesh.DOUBLESIDE:BABYLON.Mesh.FRONTSIDE 
+																				},
+																				this.scene
+																			);
+																			var color=obj_primitive.get('color');
+																			var _color=_tinycolor(color);
+																			var material=new BABYLON.StandardMaterial(this.scene);
+																			material.alpha=1;
+																			material.diffuseColor=new BABYLON.Color3(
+																				_color._r/255,
+																				_color._g/255,
+																				_color._b/255
+																			);
+																			polygon.rotation.x=rotx;
+																			polygon.rotation.y=roty;
+																			polygon.rotation.z=rotz;
+																			polygon.material=material;
+																			polygon.visibility=visible;
+																			mx.data.get({
+																				guid:obj_primitive.getGuid(),
+																				path:'SceneGraph.Texture',
+																				filter:{
+																					offset:0,
+																					amount:1
+																				},
+																				callback:dojo.hitch(this,function(objs){
+																					if(objs.length>0){
+																						var url='/file?guid='+objs[0].getGuid()+'&cachebust='+(new Date().getTime());
+																						var mat = new BABYLON.StandardMaterial("",this.scene);
+																						mat.diffuseTexture = new BABYLON.Texture(url,this.scene);
+																						polygon.material=mat;
+																					}else{}
+																				}),
+																				error:function(e){
+																					console.error("Could not retrieve objects:",e);
+																				}
+																			});
+
+																			//--------------------------------------------------------------------------------
+																			//attach userdata
+																			//--------------------------------------------------------------------------------
+																			polygon.userdata={};
+																			polygon.userdata.mxobject=obj_primitive;
+																			//--------------------------------------------------------------------------------
+																			//setup evt
+																			//--------------------------------------------------------------------------------
+																			polygon.actionManager=new BABYLON.ActionManager(this.scene);
+																			polygon.actionManager.registerAction(
+																				new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger, 
+																				dojo.hitch(this,function(event){
+																					console.log('clicked');
+																					var pickedMesh=event.meshUnderPointer; 
+																					if(
+																						pickedMesh!=null&&
+																						pickedMesh.userdata!=null&&
+																						pickedMesh.userdata.mxobject!=null&&
+																						pickedMesh.userdata.mxobject.getGuid()!=null&&
+																						this.str_primitive_click_mf!=null&&
+																						this.str_primitive_click_mf!=''
+																					){
+																						this._execMf(
+																							this.str_primitive_click_mf,
+																							pickedMesh.userdata.mxobject.getGuid(),
+																							dojo.hitch(this,function(){
+																							})
+																						);
+																						//var hl = new BABYLON.HighlightLayer("hl1", this.scene);
+																						//hl.addMesh(pickedMesh, BABYLON.Color3.Green());
+																					}
+																				}))
+																			);
+																			//--------------------------------------------------------------------------------
+																		}else{
+																			console.info('Not Creating '+obj_primitive.getEntity()+": Invalid number of points")
+																		}
+																	}else{
+																		console.info('Not Creating '+obj_primitive.getEntity()+": No points")
+																	}
+																}),
+																error:function(e){
+																	console.error("Could not retrieve objects:",e);
+																}
+															});
+															break;
+
 														case 'SceneGraph.Plane':
 															console.info('Creating '+obj_primitive.getEntity())
 															var w=obj_primitive.get('w')==null?1:obj_primitive.get('w');

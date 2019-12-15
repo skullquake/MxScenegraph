@@ -16,9 +16,6 @@ public class Line extends scenegraph.proxies.Primitive
 	 */
 	public enum MemberNames
 	{
-		x1("x1"),
-		y1("y1"),
-		z1("z1"),
 		Name("Name"),
 		x("x"),
 		y("y"),
@@ -88,114 +85,6 @@ public class Line extends scenegraph.proxies.Primitive
 		for (com.mendix.systemwideinterfaces.core.IMendixObject obj : com.mendix.core.Core.retrieveXPathQuery(context, "//SceneGraph.Line" + xpathConstraint))
 			result.add(scenegraph.proxies.Line.initialize(context, obj));
 		return result;
-	}
-
-	/**
-	 * @return value of x1
-	 */
-	public final java.lang.Double getx1()
-	{
-		return getx1(getContext());
-	}
-
-	/**
-	 * @param context
-	 * @return value of x1
-	 */
-	public final java.lang.Double getx1(com.mendix.systemwideinterfaces.core.IContext context)
-	{
-		return (java.lang.Double) getMendixObject().getValue(context, MemberNames.x1.toString());
-	}
-
-	/**
-	 * Set value of x1
-	 * @param x1
-	 */
-	public final void setx1(java.lang.Double x1)
-	{
-		setx1(getContext(), x1);
-	}
-
-	/**
-	 * Set value of x1
-	 * @param context
-	 * @param x1
-	 */
-	public final void setx1(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Double x1)
-	{
-		getMendixObject().setValue(context, MemberNames.x1.toString(), x1);
-	}
-
-	/**
-	 * @return value of y1
-	 */
-	public final java.lang.Double gety1()
-	{
-		return gety1(getContext());
-	}
-
-	/**
-	 * @param context
-	 * @return value of y1
-	 */
-	public final java.lang.Double gety1(com.mendix.systemwideinterfaces.core.IContext context)
-	{
-		return (java.lang.Double) getMendixObject().getValue(context, MemberNames.y1.toString());
-	}
-
-	/**
-	 * Set value of y1
-	 * @param y1
-	 */
-	public final void sety1(java.lang.Double y1)
-	{
-		sety1(getContext(), y1);
-	}
-
-	/**
-	 * Set value of y1
-	 * @param context
-	 * @param y1
-	 */
-	public final void sety1(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Double y1)
-	{
-		getMendixObject().setValue(context, MemberNames.y1.toString(), y1);
-	}
-
-	/**
-	 * @return value of z1
-	 */
-	public final java.lang.Double getz1()
-	{
-		return getz1(getContext());
-	}
-
-	/**
-	 * @param context
-	 * @return value of z1
-	 */
-	public final java.lang.Double getz1(com.mendix.systemwideinterfaces.core.IContext context)
-	{
-		return (java.lang.Double) getMendixObject().getValue(context, MemberNames.z1.toString());
-	}
-
-	/**
-	 * Set value of z1
-	 * @param z1
-	 */
-	public final void setz1(java.lang.Double z1)
-	{
-		setz1(getContext(), z1);
-	}
-
-	/**
-	 * Set value of z1
-	 * @param context
-	 * @param z1
-	 */
-	public final void setz1(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Double z1)
-	{
-		getMendixObject().setValue(context, MemberNames.z1.toString(), z1);
 	}
 
 	@java.lang.Override
