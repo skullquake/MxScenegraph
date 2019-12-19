@@ -25,8 +25,11 @@ public class Text extends scenegraph.proxies.Primitive
 		rotx("rotx"),
 		roty("roty"),
 		rotz("rotz"),
-		visible("visible"),
+		sclx("sclx"),
+		scly("scly"),
+		sclz("sclz"),
 		color("color"),
+		visible("visible"),
 		Primitive_Node("SceneGraph.Primitive_Node"),
 		Selected("SceneGraph.Selected"),
 		Texture("SceneGraph.Texture");

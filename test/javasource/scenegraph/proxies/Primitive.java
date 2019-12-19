@@ -27,8 +27,11 @@ public class Primitive
 		rotx("rotx"),
 		roty("roty"),
 		rotz("rotz"),
-		visible("visible"),
+		sclx("sclx"),
+		scly("scly"),
+		sclz("sclz"),
 		color("color"),
+		visible("visible"),
 		Primitive_Node("SceneGraph.Primitive_Node"),
 		Selected("SceneGraph.Selected"),
 		Texture("SceneGraph.Texture");
@@ -430,39 +433,111 @@ public class Primitive
 	}
 
 	/**
-	 * @return value of visible
+	 * @return value of sclx
 	 */
-	public final java.lang.Boolean getvisible()
+	public final java.lang.Double getsclx()
 	{
-		return getvisible(getContext());
+		return getsclx(getContext());
 	}
 
 	/**
 	 * @param context
-	 * @return value of visible
+	 * @return value of sclx
 	 */
-	public final java.lang.Boolean getvisible(com.mendix.systemwideinterfaces.core.IContext context)
+	public final java.lang.Double getsclx(com.mendix.systemwideinterfaces.core.IContext context)
 	{
-		return (java.lang.Boolean) getMendixObject().getValue(context, MemberNames.visible.toString());
+		return (java.lang.Double) getMendixObject().getValue(context, MemberNames.sclx.toString());
 	}
 
 	/**
-	 * Set value of visible
-	 * @param visible
+	 * Set value of sclx
+	 * @param sclx
 	 */
-	public final void setvisible(java.lang.Boolean visible)
+	public final void setsclx(java.lang.Double sclx)
 	{
-		setvisible(getContext(), visible);
+		setsclx(getContext(), sclx);
 	}
 
 	/**
-	 * Set value of visible
+	 * Set value of sclx
 	 * @param context
-	 * @param visible
+	 * @param sclx
 	 */
-	public final void setvisible(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Boolean visible)
+	public final void setsclx(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Double sclx)
 	{
-		getMendixObject().setValue(context, MemberNames.visible.toString(), visible);
+		getMendixObject().setValue(context, MemberNames.sclx.toString(), sclx);
+	}
+
+	/**
+	 * @return value of scly
+	 */
+	public final java.lang.Double getscly()
+	{
+		return getscly(getContext());
+	}
+
+	/**
+	 * @param context
+	 * @return value of scly
+	 */
+	public final java.lang.Double getscly(com.mendix.systemwideinterfaces.core.IContext context)
+	{
+		return (java.lang.Double) getMendixObject().getValue(context, MemberNames.scly.toString());
+	}
+
+	/**
+	 * Set value of scly
+	 * @param scly
+	 */
+	public final void setscly(java.lang.Double scly)
+	{
+		setscly(getContext(), scly);
+	}
+
+	/**
+	 * Set value of scly
+	 * @param context
+	 * @param scly
+	 */
+	public final void setscly(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Double scly)
+	{
+		getMendixObject().setValue(context, MemberNames.scly.toString(), scly);
+	}
+
+	/**
+	 * @return value of sclz
+	 */
+	public final java.lang.Double getsclz()
+	{
+		return getsclz(getContext());
+	}
+
+	/**
+	 * @param context
+	 * @return value of sclz
+	 */
+	public final java.lang.Double getsclz(com.mendix.systemwideinterfaces.core.IContext context)
+	{
+		return (java.lang.Double) getMendixObject().getValue(context, MemberNames.sclz.toString());
+	}
+
+	/**
+	 * Set value of sclz
+	 * @param sclz
+	 */
+	public final void setsclz(java.lang.Double sclz)
+	{
+		setsclz(getContext(), sclz);
+	}
+
+	/**
+	 * Set value of sclz
+	 * @param context
+	 * @param sclz
+	 */
+	public final void setsclz(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Double sclz)
+	{
+		getMendixObject().setValue(context, MemberNames.sclz.toString(), sclz);
 	}
 
 	/**
@@ -499,6 +574,42 @@ public class Primitive
 	public final void setcolor(com.mendix.systemwideinterfaces.core.IContext context, java.lang.String color)
 	{
 		getMendixObject().setValue(context, MemberNames.color.toString(), color);
+	}
+
+	/**
+	 * @return value of visible
+	 */
+	public final java.lang.Boolean getvisible()
+	{
+		return getvisible(getContext());
+	}
+
+	/**
+	 * @param context
+	 * @return value of visible
+	 */
+	public final java.lang.Boolean getvisible(com.mendix.systemwideinterfaces.core.IContext context)
+	{
+		return (java.lang.Boolean) getMendixObject().getValue(context, MemberNames.visible.toString());
+	}
+
+	/**
+	 * Set value of visible
+	 * @param visible
+	 */
+	public final void setvisible(java.lang.Boolean visible)
+	{
+		setvisible(getContext(), visible);
+	}
+
+	/**
+	 * Set value of visible
+	 * @param context
+	 * @param visible
+	 */
+	public final void setvisible(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Boolean visible)
+	{
+		getMendixObject().setValue(context, MemberNames.visible.toString(), visible);
 	}
 
 	/**

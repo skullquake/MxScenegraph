@@ -260,6 +260,9 @@ require(
 													var rotx=obj_primitive.get('rotx')==null?0:obj_primitive.get('rotx');
 													var roty=obj_primitive.get('roty')==null?0:obj_primitive.get('roty');
 													var rotz=obj_primitive.get('rotz')==null?0:obj_primitive.get('rotz');
+													var sclx=obj_primitive.get('sclx')==null?1:obj_primitive.get('sclx');
+													var scly=obj_primitive.get('scly')==null?1:obj_primitive.get('scly');
+													var sclz=obj_primitive.get('sclz')==null?1:obj_primitive.get('sclz');
 													var visible=obj_primitive.get('visible')==null?true:obj_primitive.get('visible');
 													switch(obj_primitive.getEntity()){
 														case 'SceneGraph.Line':
@@ -1333,7 +1336,7 @@ require(
 															textMesh.actionManager=new BABYLON.ActionManager(this.scene);
 															textMesh.actionManager.registerAction(
 																new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger, 
-																dojo.hitch(this,function(event){alert('asdf');
+																dojo.hitch(this,function(event){//not working for text?
 																	console.log('clicked');
 																	var pickedMesh=event.meshUnderPointer; 
 																	if(
@@ -1369,40 +1372,78 @@ require(
 																	if(objs.length>0){
 																		console.info('Creating '+obj_primitive.getEntity())
 																		var urlmodel='file?guid='+objs[0].getGuid()+'&cachebust='+(new Date().getTime())+'&name='+objs[0].get('Name');//note: no leading /, urlencode !!!
-																		//var urlmodel='duck.gltf';
 																		console.log(urlmodel);
-																		/*
-																		BABYLON.SceneLoader.Append("./", "duck.gltf", scene, function (scene) {
-																		//BABYLON.SceneLoader.Append(
-																		//BABYLON.SceneLoader.LoadAssetContainer(
 																		BABYLON.SceneLoader.LoadAssetContainerAsync(
-																			"./",
-																			urlmodel,//"duck.gltf",
-																			this.scene,
-																			function(container){
-																				window.container=container;
-																				container.meshes.forEach(dojo.hitch(this,function(mesh,meshidx){
-																					mesh.position=new BABYLON.Vector3(x,y,z);
-																				}));
-																				//container.addAllToScene();
-																			}
-																		);
-																		*/
-																		BABYLON.SceneLoader.LoadAssetContainerAsync(
-																			//"https://playground.babylonjs.com/scenes/",
-																			//"skull.babylon",
-																			"/",
-																			urlmodel,
+																			'/file?guid='+objs[0].getGuid()+'&cachebust='+(new Date().getTime()),
+																			'&name='+objs[0].get('Name'),
 																			this.scene
 																		).then(
 																			dojo.hitch(this,function(container){
-																				window.container=container;
 																				container.meshes.forEach(dojo.hitch(this,function(mesh,meshidx){
 																					mesh.position=new BABYLON.Vector3(x,y,z);
-																					mesh.scaling.x=0.025;
-																					mesh.scaling.y=0.025;
-																					mesh.scaling.z=0.025;
+																					//mesh.position.x+=x;
+																					//mesh.position.y+=y;
+																					//mesh.position.z+=z;
+																					mesh.scaling.x=sclx;
+																					mesh.scaling.y=scly;
+																					mesh.scaling.z=sclz;
+																					//--------------------------------------------------------------------------------
+																					//attach userdata
+																					//--------------------------------------------------------------------------------
+																					mesh.userdata={};
+																					mesh.userdata.mxobject=obj_primitive;
+																					//--------------------------------------------------------------------------------
+																					//setup evt
+																					//--------------------------------------------------------------------------------
+																					mesh.actionManager=new BABYLON.ActionManager(this.scene);
+																					mesh.actionManager.registerAction(
+																						new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger, 
+																						dojo.hitch(this,function(event){
+																							console.log('clicked');
+																							var pickedMesh=event.meshUnderPointer; 
+																							if(
+																								pickedMesh!=null&&
+																								pickedMesh.userdata!=null&&
+																								pickedMesh.userdata.mxobject!=null&&
+																								pickedMesh.userdata.mxobject.getGuid()!=null&&
+																								this.str_primitive_click_mf!=null&&
+																								this.str_primitive_click_mf!=''
+																							){
+																								this._execMf(
+																									this.str_primitive_click_mf,
+																									pickedMesh.userdata.mxobject.getGuid(),
+																									dojo.hitch(this,function(){
+																									})
+																								);
+																								//var hl = new BABYLON.HighlightLayer("hl1", this.scene);
+																								//hl.addMesh(pickedMesh, BABYLON.Color3.Green());
+																							}
+																						}))
+																					);
+																					//--------------------------------------------------------------------------------
 																				}));
+																				mx.data.get({
+																					guid:obj_primitive.getGuid(),
+																					path:'SceneGraph.Texture',
+																					filter:{
+																						offset:0,
+																						amount:1
+																					},
+																					callback:dojo.hitch(this,function(objs){
+																						if(objs.length>0){
+																							var url='/file?guid='+objs[0].getGuid()+'&cachebust='+(new Date().getTime());
+																							var mat = new BABYLON.StandardMaterial("",this.scene);
+																							mat.diffuseTexture = new BABYLON.Texture(url,this.scene);
+																							container.meshes.forEach(dojo.hitch(this,function(mesh,meshidx){
+																								mesh.material=mat;
+																							}));
+																						}else{}
+																					}),
+																					error:function(e){
+																						console.error("Could not retrieve objects:",e);
+																					}
+																				});
+
 																				container.addAllToScene();
 																			})
 																		);
