@@ -32,7 +32,21 @@ public class ja_str2filedocument extends CustomJavaAction<java.lang.Boolean>
 		this.obj_filedocument = __obj_filedocument == null ? null : system.proxies.FileDocument.initialize(getContext(), __obj_filedocument);
 
 		// BEGIN USER CODE
-		throw new com.mendix.systemwideinterfaces.MendixRuntimeException("Java action was not implemented");
+                try (
+			java.io.InputStream is=org.apache.commons.io.IOUtils.toInputStream(str_str,java.nio.charset.StandardCharsets.UTF_8)
+
+                ){
+                        com.mendix.core.Core.storeFileDocumentContent(
+				this.getContext(),
+				obj_filedocument.getMendixObject(),
+				is
+			);
+                }catch(java.lang.Exception e){
+			com.mendix.core.Core.getLogger(this.toString()).error(e.toString());
+			return false;
+		}
+		return true;
+
 		// END USER CODE
 	}
 

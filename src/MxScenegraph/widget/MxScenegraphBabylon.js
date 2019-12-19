@@ -7,6 +7,11 @@ require(
 				main:'babylon'
 			},
 			{
+				name:'_babylonjs_loaders',
+				location:'/widgets/MxScenegraph/lib/babylon.js',
+				main:'babylonjs.loaders.min'
+			},
+			{
 				name:'_earcut',
 				location:'/widgets/MxScenegraph/lib/babylon.js',
 				main:'earcut.min'
@@ -37,8 +42,10 @@ require(
 		"dojo/mouse",
 		"dojo/on",
 		'babylonjs',
+		//'_babylonjs_loaders',
 		'_earcut',
 		'_tinycolorbabylonjs',
+		"MxScenegraph/lib/jquery-1.11.2",
 		"dojo/text!MxScenegraph/widget/template/MxScenegraphBabylon.html"
 	],
 	function(
@@ -60,15 +67,16 @@ require(
 		mouse,
 		on,
 		babylonjs,
+		//_babylonjs_loaders,
 		_earcut,
 		_tinycolor,
+                _jQuery,
 		widgetTemplate
 	){
-		"use strict";
-		//--------------------------------------------------------------------------------
-		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		//--------------------------------------------------------------------------------
+                "use strict";
+                var $=_jQuery.noConflict(true);
 		window.earcut=_earcut;
+		window.BABYLON=babylonjs;
 		require(
 			{
 				packages:[
@@ -76,15 +84,25 @@ require(
 						name:'_meshwriter',
 						location:'/widgets/MxScenegraph/lib/babylon.js',
 						main:'meshwriter'
+					},
+					{
+						name:'babylonjs-loaders',
+						location:'/widgets/MxScenegraph/lib/babylon.js',
+						main:'babylonjs.loaders.min'
 					}
 				]
 			},
 			[
-				'_meshwriter'
+				'_meshwriter',
+				'babylonjs-loaders'
 			],
 			function(
-				_meshwriter
-			){}
+				_meshwriter,
+				babylonjs_loaders
+			){
+				//console.log(_meshwriter);
+				//console.log(babylonjs_loaders);
+			}
 		)
 		//--------------------------------------------------------------------------------
 		return declare(
@@ -1269,7 +1287,6 @@ require(
 															);
 															//--------------------------------------------------------------------------------
 															break;
-
 														case 'SceneGraph.Text':
 															var sz=obj_primitive.get('sz')/10;
 															var val=obj_primitive.get('val');
@@ -1340,6 +1357,66 @@ require(
 															);
 															//--------------------------------------------------------------------------------
 															break;
+														case 'SceneGraph.Model':
+															mx.data.get({
+																guid:obj_primitive.getGuid(),
+																path:'SceneGraph.Model_ModelFile',
+																filter:{
+																	offset:0,
+																	amount:1
+																},
+																callback:dojo.hitch(this,function(objs){
+																	if(objs.length>0){
+																		console.info('Creating '+obj_primitive.getEntity())
+																		var urlmodel='file?guid='+objs[0].getGuid()+'&cachebust='+(new Date().getTime())+'&name='+objs[0].get('Name');//note: no leading /, urlencode !!!
+																		//var urlmodel='duck.gltf';
+																		console.log(urlmodel);
+																		/*
+																		BABYLON.SceneLoader.Append("./", "duck.gltf", scene, function (scene) {
+																		//BABYLON.SceneLoader.Append(
+																		//BABYLON.SceneLoader.LoadAssetContainer(
+																		BABYLON.SceneLoader.LoadAssetContainerAsync(
+																			"./",
+																			urlmodel,//"duck.gltf",
+																			this.scene,
+																			function(container){
+																				window.container=container;
+																				container.meshes.forEach(dojo.hitch(this,function(mesh,meshidx){
+																					mesh.position=new BABYLON.Vector3(x,y,z);
+																				}));
+																				//container.addAllToScene();
+																			}
+																		);
+																		*/
+																		BABYLON.SceneLoader.LoadAssetContainerAsync(
+																			//"https://playground.babylonjs.com/scenes/",
+																			//"skull.babylon",
+																			"/",
+																			urlmodel,
+																			this.scene
+																		).then(
+																			dojo.hitch(this,function(container){
+																				window.container=container;
+																				container.meshes.forEach(dojo.hitch(this,function(mesh,meshidx){
+																					mesh.position=new BABYLON.Vector3(x,y,z);
+																					mesh.scaling.x=0.025;
+																					mesh.scaling.y=0.025;
+																					mesh.scaling.z=0.025;
+																				}));
+																				container.addAllToScene();
+																			})
+																		);
+																		//--------------------------------------------------------------------------------
+																	}else{
+																		console.error('Not Creating '+obj_primitive.getEntity()+': No heightmap')
+																	}
+																}),
+																error:function(e){
+																	console.error("Could not retrieve objects:",e);
+																}
+															});
+															break;
+	
 														default:
 															console.error('Invalid Primitive Entity Type')
 															break;
@@ -1450,6 +1527,8 @@ require(
 								break;
 						}
 					});
+					window.scene=scene;
+					//BABYLON.SceneLoader.ImportMesh("", "/", "duck.gltf", this.scene, function (scene) { }, undefined, undefined, '.gltf');
 					return scene;
 				},
 				loop:function(){ 
