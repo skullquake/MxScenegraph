@@ -317,8 +317,65 @@ require(
 																	console.error("Could not retrieve objects:",e);
 																}
 															});
+															break;
+														case 'SceneGraph.Bezier':
+															//todo!!!
+															mx.data.get({
+																guid:obj_primitive.getGuid(),
+																path:'SceneGraph.Vec3f_Bezier',
+																filter:{
+																	offset:0,
+																	amount:4096
+																},
+																callback:dojo.hitch(this,function(arr_vec3f){
+																	if(arr_vec3f.length>0){
+																		if(arr_vec3f.length>1){
+																			console.info('Creating '+obj_primitive.getEntity());
+																			var color=obj_primitive.get('color');
+																			var color=obj_primitive.get('nbPoints');
+																			var _color=_tinycolor(color);
+																			var material=new BABYLON.StandardMaterial(this.scene);
+																			material.alpha=opacity;
+																			material.diffuseColor=new BABYLON.Color3(
+																				_color._r/255,
+																				_color._g/255,
+																				_color._b/255
+																			);
+																			for(var i=0;i<arr_vec3f.length-1;i++){//splice???
+																				var x_0=arr_vec3f[i+0].get('x');
+																				var y_0=arr_vec3f[i+0].get('y');
+																				var z_0=arr_vec3f[i+0].get('z');
+																				var x_1=arr_vec3f[i+1].get('x');
+																				var y_1=arr_vec3f[i+1].get('y');
+																				var z_1=arr_vec3f[i+1].get('z');
+																				var quadraticBezierVectors=BABYLON.Curve3.CreateQuadraticBezier(
+																					BABYLON.Vector3.Zero(),
+																					new BABYLON.Vector3(x_0,y_0,z_0),
+																					new BABYLON.Vector3(x_1,y_1,z_1),
+																					25
+																				);
+																				var quadraticBezierCurve=BABYLON.Mesh.CreateLines(
+																					"qbezier",
+																					quadraticBezierVectors.getPoints(),
+																					this.scene
+																				);
+																				//quadraticBezierCurve.color=new BABYLON.Color3(1,1,0.5);
+																				quadraticBezierCurve.material=material;
+																			}
+																		}else{
+																			console.info('Not Creating '+obj_primitive.getEntity()+": Invalid number of points")
+																		}
+																	}else{
+																		console.info('Not Creating '+obj_primitive.getEntity()+": No points")
+																	}
+																}),
+																error:function(e){
+																	console.error("Could not retrieve objects:",e);
+																}
+															});
 
 															break;
+
 														case 'SceneGraph.Polygon':
 															mx.data.get({
 																guid:obj_primitive.getGuid(),

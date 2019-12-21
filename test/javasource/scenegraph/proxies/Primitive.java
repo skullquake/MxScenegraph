@@ -82,6 +82,9 @@ public class Primitive
 	 */
 	public static scenegraph.proxies.Primitive initialize(com.mendix.systemwideinterfaces.core.IContext context, com.mendix.systemwideinterfaces.core.IMendixObject mendixObject)
 	{
+		if (com.mendix.core.Core.isSubClassOf("SceneGraph.Bezier", mendixObject.getType()))
+			return scenegraph.proxies.Bezier.initialize(context, mendixObject);
+
 		if (com.mendix.core.Core.isSubClassOf("SceneGraph.Box", mendixObject.getType()))
 			return scenegraph.proxies.Box.initialize(context, mendixObject);
 

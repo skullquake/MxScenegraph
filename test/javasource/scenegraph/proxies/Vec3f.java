@@ -25,7 +25,8 @@ public class Vec3f
 		z("z"),
 		Vec3f_Lathe("SceneGraph.Vec3f_Lathe"),
 		Vec3f_Polygon("SceneGraph.Vec3f_Polygon"),
-		Vec3f_Line("SceneGraph.Vec3f_Line");
+		Vec3f_Line("SceneGraph.Vec3f_Line"),
+		Vec3f_Bezier("SceneGraph.Vec3f_Bezier");
 
 		private java.lang.String metaName;
 
@@ -355,6 +356,49 @@ public class Vec3f
 			getMendixObject().setValue(context, MemberNames.Vec3f_Line.toString(), null);
 		else
 			getMendixObject().setValue(context, MemberNames.Vec3f_Line.toString(), vec3f_line.getMendixObject().getId());
+	}
+
+	/**
+	 * @return value of Vec3f_Bezier
+	 */
+	public final scenegraph.proxies.Bezier getVec3f_Bezier() throws com.mendix.core.CoreException
+	{
+		return getVec3f_Bezier(getContext());
+	}
+
+	/**
+	 * @param context
+	 * @return value of Vec3f_Bezier
+	 */
+	public final scenegraph.proxies.Bezier getVec3f_Bezier(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
+	{
+		scenegraph.proxies.Bezier result = null;
+		com.mendix.systemwideinterfaces.core.IMendixIdentifier identifier = getMendixObject().getValue(context, MemberNames.Vec3f_Bezier.toString());
+		if (identifier != null)
+			result = scenegraph.proxies.Bezier.load(context, identifier);
+		return result;
+	}
+
+	/**
+	 * Set value of Vec3f_Bezier
+	 * @param vec3f_bezier
+	 */
+	public final void setVec3f_Bezier(scenegraph.proxies.Bezier vec3f_bezier)
+	{
+		setVec3f_Bezier(getContext(), vec3f_bezier);
+	}
+
+	/**
+	 * Set value of Vec3f_Bezier
+	 * @param context
+	 * @param vec3f_bezier
+	 */
+	public final void setVec3f_Bezier(com.mendix.systemwideinterfaces.core.IContext context, scenegraph.proxies.Bezier vec3f_bezier)
+	{
+		if (vec3f_bezier == null)
+			getMendixObject().setValue(context, MemberNames.Vec3f_Bezier.toString(), null);
+		else
+			getMendixObject().setValue(context, MemberNames.Vec3f_Bezier.toString(), vec3f_bezier.getMendixObject().getId());
 	}
 
 	/**
