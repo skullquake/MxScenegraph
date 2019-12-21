@@ -263,6 +263,7 @@ require(
 													var sclx=obj_primitive.get('sclx')==null?1:obj_primitive.get('sclx');
 													var scly=obj_primitive.get('scly')==null?1:obj_primitive.get('scly');
 													var sclz=obj_primitive.get('sclz')==null?1:obj_primitive.get('sclz');
+													var opacity=obj_primitive.get('opacity')==null?1:obj_primitive.get('opacity');
 													var visible=obj_primitive.get('visible')==null?true:obj_primitive.get('visible');
 													switch(obj_primitive.getEntity()){
 														case 'SceneGraph.Line':
@@ -294,7 +295,7 @@ require(
 																			var color=obj_primitive.get('color');
 																			var _color=_tinycolor(color);
 																			var material=new BABYLON.StandardMaterial(this.scene);
-																			material.alpha=1;
+																			material.alpha=opacity;
 																			material.diffuseColor=new BABYLON.Color3(
 																				_color._r/255,
 																				_color._g/255,
@@ -353,7 +354,7 @@ require(
 																			var color=obj_primitive.get('color');
 																			var _color=_tinycolor(color);
 																			var material=new BABYLON.StandardMaterial(this.scene);
-																			material.alpha=1;
+																			material.alpha=opacity;
 																			material.diffuseColor=new BABYLON.Color3(
 																				_color._r/255,
 																				_color._g/255,
@@ -376,6 +377,7 @@ require(
 																						var url='/file?guid='+objs[0].getGuid()+'&cachebust='+(new Date().getTime());
 																						var mat = new BABYLON.StandardMaterial("",this.scene);
 																						mat.diffuseTexture = new BABYLON.Texture(url,this.scene);
+																						mat.alpha=opacity;
 																						polygon.material=mat;
 																					}else{}
 																				}),
@@ -456,7 +458,7 @@ require(
 															var color=obj_primitive.get('color');
 															var _color=_tinycolor(color);
 															var material=new BABYLON.StandardMaterial(this.scene);
-															material.alpha=1;
+															material.alpha=opacity;
 															material.diffuseColor=new BABYLON.Color3(
 																_color._r/255,
 																_color._g/255,
@@ -475,6 +477,7 @@ require(
 																		var url='/file?guid='+objs[0].getGuid()+'&cachebust='+(new Date().getTime());
 																		var mat = new BABYLON.StandardMaterial("",this.scene);
 																		mat.diffuseTexture = new BABYLON.Texture(url,this.scene);
+																		mat.alpha=opacity;
 																		plane.material=mat;
 																	}else{}
 																}),
@@ -523,6 +526,7 @@ require(
 																		var url='/file?guid='+objs[0].getGuid()+'&cachebust='+(new Date().getTime());
 																		var mat = new BABYLON.StandardMaterial("",this.scene);
 																		mat.diffuseTexture = new BABYLON.Texture(url,this.scene);
+																		mat.alpha=opacity;
 																		disc.material=mat;
 																	}else{}
 																}),
@@ -586,7 +590,7 @@ require(
 															var color=obj_primitive.get('color');
 															var _color=_tinycolor(color);
 															var material=new BABYLON.StandardMaterial(this.scene);
-															material.alpha=1;
+															material.alpha=opacity;
 															material.diffuseColor=new BABYLON.Color3(
 																_color._r/255,
 																_color._g/255,
@@ -605,6 +609,7 @@ require(
 																		var url='/file?guid='+objs[0].getGuid()+'&cachebust='+(new Date().getTime());
 																		var mat = new BABYLON.StandardMaterial("",this.scene);
 																		mat.diffuseTexture = new BABYLON.Texture(url,this.scene);
+																		mat.alpha=opacity;
 																		box.material=mat;
 																	}else{}
 																}),
@@ -668,7 +673,7 @@ require(
 															var color=obj_primitive.get('color');
 															var _color=_tinycolor(color);
 															var material=new BABYLON.StandardMaterial(this.scene);
-															material.alpha=1;
+															material.alpha=opacity;
 															material.diffuseColor=new BABYLON.Color3(
 																_color._r/255,
 																_color._g/255,
@@ -687,6 +692,7 @@ require(
 																		var url='/file?guid='+objs[0].getGuid()+'&cachebust='+(new Date().getTime());
 																		var mat = new BABYLON.StandardMaterial("",this.scene);
 																		mat.diffuseTexture = new BABYLON.Texture(url,this.scene);
+																		mat.alpha=opacity;
 																		sphere.material=mat;
 																	}else{}
 																}),
@@ -754,7 +760,7 @@ require(
 															var color=obj_primitive.get('color');
 															var _color=_tinycolor(color);
 															var material=new BABYLON.StandardMaterial(this.scene);
-															material.alpha=1;
+															material.alpha=opacity;
 															material.diffuseColor=new BABYLON.Color3(
 																_color._r/255,
 																_color._g/255,
@@ -773,6 +779,7 @@ require(
 																		var url='/file?guid='+objs[0].getGuid()+'&cachebust='+(new Date().getTime());
 																		var mat = new BABYLON.StandardMaterial("",this.scene);
 																		mat.diffuseTexture = new BABYLON.Texture(url,this.scene);
+																		mat.alpha=opacity;
 																		cylinder.material=mat;
 																	}else{}
 																}),
@@ -839,7 +846,7 @@ require(
 															var color=obj_primitive.get('color');
 															var _color=_tinycolor(color);
 															var material=new BABYLON.StandardMaterial(this.scene);
-															material.alpha=1;
+															material.alpha=opacity;
 															material.diffuseColor=new BABYLON.Color3(
 																_color._r/255,
 																_color._g/255,
@@ -858,6 +865,7 @@ require(
 																		var url='/file?guid='+objs[0].getGuid()+'&cachebust='+(new Date().getTime());
 																		var mat = new BABYLON.StandardMaterial("",this.scene);
 																		mat.diffuseTexture = new BABYLON.Texture(url,this.scene);
+																		mat.alpha=opacity;
 																		torus.material=mat;
 																	}else{}
 																}),
@@ -931,12 +939,13 @@ require(
 															var color=obj_primitive.get('color');
 															var _color=_tinycolor(color);
 															var material=new BABYLON.StandardMaterial(this.scene);
-															material.alpha=1;
+															material.alpha=opacity;
 															material.diffuseColor=new BABYLON.Color3(
 																_color._r/255,
 																_color._g/255,
 																_color._b/255
 															);
+															material.alpha=0.5;
 															knot.material=material;
 															mx.data.get({
 																guid:obj_primitive.getGuid(),
@@ -950,6 +959,7 @@ require(
 																		var url='/file?guid='+objs[0].getGuid()+'&cachebust='+(new Date().getTime());
 																		var mat = new BABYLON.StandardMaterial("",this.scene);
 																		mat.diffuseTexture = new BABYLON.Texture(url,this.scene);
+																		mat.alpha=opacity;
 																		knot.material=mat;
 																	}else{}
 																}),
@@ -1016,7 +1026,7 @@ require(
 															var color=obj_primitive.get('color');
 															var _color=_tinycolor(color);
 															var material=new BABYLON.StandardMaterial(this.scene);
-															material.alpha=1;
+															material.alpha=opacity;
 															material.diffuseColor=new BABYLON.Color3(
 																_color._r/255,
 																_color._g/255,
@@ -1035,6 +1045,7 @@ require(
 																		var url='/file?guid='+objs[0].getGuid()+'&cachebust='+(new Date().getTime());
 																		var mat = new BABYLON.StandardMaterial("",this.scene);
 																		mat.diffuseTexture = new BABYLON.Texture(url,this.scene);
+																		mat.alpha=opacity;
 																		ground.material=mat;
 																	}else{}
 																}),
@@ -1092,10 +1103,6 @@ require(
 																callback:dojo.hitch(this,function(objs){
 																	if(objs.length>0){
 																		var urlheightmap='/file?guid='+objs[0].getGuid()+'&cachebust='+(new Date().getTime());
-																		//var mat = new BABYLON.StandardMaterial("",this.scene);
-																		//mat.diffuseTexture = new BABYLON.Texture(url,this.scene);
-																		//heightmapground.material=mat;
-
 																		console.info('Creating '+obj_primitive.getEntity())
 																		var width=obj_primitive.get('width')==null?1:obj_primitive.get('width')>0?obj_primitive.get('width'):1;
 																		var height=obj_primitive.get('height')==null?1:obj_primitive.get('height')>0?obj_primitive.get('height'):1;
@@ -1117,7 +1124,7 @@ require(
 																		var color=obj_primitive.get('color');
 																		var _color=_tinycolor(color);
 																		var material=new BABYLON.StandardMaterial(this.scene);
-																		material.alpha=1;
+																		material.alpha=opacity;
 																		material.diffuseColor=new BABYLON.Color3(
 																			_color._r/255,
 																			_color._g/255,
@@ -1136,6 +1143,7 @@ require(
 																					var url='/file?guid='+objs[0].getGuid()+'&cachebust='+(new Date().getTime());
 																					var mat = new BABYLON.StandardMaterial("",this.scene);
 																					mat.diffuseTexture = new BABYLON.Texture(url,this.scene);
+																					mat.alpha=opacity;
 																					heightmapground.material=mat;
 																				}else{}
 																			}),
@@ -1225,7 +1233,7 @@ require(
 															var color=obj_primitive.get('color');
 															var _color=_tinycolor(color);
 															var material=new BABYLON.StandardMaterial(this.scene);
-															material.alpha=1;
+															material.alpha=opacity;
 															material.diffuseColor=new BABYLON.Color3(
 																_color._r/255,
 																_color._g/255,
@@ -1244,6 +1252,7 @@ require(
 																		var url='/file?guid='+objs[0].getGuid()+'&cachebust='+(new Date().getTime());
 																		var mat = new BABYLON.StandardMaterial("",this.scene);
 																		mat.diffuseTexture = new BABYLON.Texture(url,this.scene);
+																		mat.alpha=opacity;
 																		tiledground.material=mat;
 																	}else{}
 																}),
@@ -1314,7 +1323,7 @@ require(
 															var color=obj_primitive.get('color');
 															var _color=_tinycolor(color);
 															var material=new BABYLON.StandardMaterial(this.scene);
-															material.alpha=1;
+															material.alpha=opacity;
 															material.diffuseColor=new BABYLON.Color3(
 																_color._r/255,
 																_color._g/255,
@@ -1422,28 +1431,6 @@ require(
 																					);
 																					//--------------------------------------------------------------------------------
 																				}));
-																				mx.data.get({
-																					guid:obj_primitive.getGuid(),
-																					path:'SceneGraph.Texture',
-																					filter:{
-																						offset:0,
-																						amount:1
-																					},
-																					callback:dojo.hitch(this,function(objs){
-																						if(objs.length>0){
-																							var url='/file?guid='+objs[0].getGuid()+'&cachebust='+(new Date().getTime());
-																							var mat = new BABYLON.StandardMaterial("",this.scene);
-																							mat.diffuseTexture = new BABYLON.Texture(url,this.scene);
-																							container.meshes.forEach(dojo.hitch(this,function(mesh,meshidx){
-																								mesh.material=mat;
-																							}));
-																						}else{}
-																					}),
-																					error:function(e){
-																						console.error("Could not retrieve objects:",e);
-																					}
-																				});
-
 																				container.addAllToScene();
 																			})
 																		);

@@ -28,6 +28,7 @@ public class Line extends scenegraph.proxies.Primitive
 		sclz("sclz"),
 		color("color"),
 		visible("visible"),
+		opacity("opacity"),
 		Primitive_Node("SceneGraph.Primitive_Node"),
 		Selected("SceneGraph.Selected"),
 		Texture("SceneGraph.Texture");

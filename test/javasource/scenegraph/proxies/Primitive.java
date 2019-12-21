@@ -32,6 +32,7 @@ public class Primitive
 		sclz("sclz"),
 		color("color"),
 		visible("visible"),
+		opacity("opacity"),
 		Primitive_Node("SceneGraph.Primitive_Node"),
 		Selected("SceneGraph.Selected"),
 		Texture("SceneGraph.Texture");
@@ -610,6 +611,42 @@ public class Primitive
 	public final void setvisible(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Boolean visible)
 	{
 		getMendixObject().setValue(context, MemberNames.visible.toString(), visible);
+	}
+
+	/**
+	 * @return value of opacity
+	 */
+	public final java.lang.Double getopacity()
+	{
+		return getopacity(getContext());
+	}
+
+	/**
+	 * @param context
+	 * @return value of opacity
+	 */
+	public final java.lang.Double getopacity(com.mendix.systemwideinterfaces.core.IContext context)
+	{
+		return (java.lang.Double) getMendixObject().getValue(context, MemberNames.opacity.toString());
+	}
+
+	/**
+	 * Set value of opacity
+	 * @param opacity
+	 */
+	public final void setopacity(java.lang.Double opacity)
+	{
+		setopacity(getContext(), opacity);
+	}
+
+	/**
+	 * Set value of opacity
+	 * @param context
+	 * @param opacity
+	 */
+	public final void setopacity(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Double opacity)
+	{
+		getMendixObject().setValue(context, MemberNames.opacity.toString(), opacity);
 	}
 
 	/**

@@ -28,6 +28,7 @@ public class Model extends scenegraph.proxies.Primitive
 		sclz("sclz"),
 		color("color"),
 		visible("visible"),
+		opacity("opacity"),
 		Model_ModelFile("SceneGraph.Model_ModelFile"),
 		Primitive_Node("SceneGraph.Primitive_Node"),
 		Selected("SceneGraph.Selected"),
