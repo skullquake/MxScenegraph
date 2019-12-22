@@ -329,38 +329,44 @@ require(
 																},
 																callback:dojo.hitch(this,function(arr_vec3f){
 																	if(arr_vec3f.length>0){
-																		if(arr_vec3f.length>1){
+																		if(arr_vec3f.length>2){
 																			console.info('Creating '+obj_primitive.getEntity());
+																			var nbPoints=obj_primitive.get('nbPoints');
 																			var color=obj_primitive.get('color');
-																			var color=obj_primitive.get('nbPoints');
 																			var _color=_tinycolor(color);
-																			var material=new BABYLON.StandardMaterial(this.scene);
-																			material.alpha=opacity;
-																			material.diffuseColor=new BABYLON.Color3(
-																				_color._r/255,
-																				_color._g/255,
-																				_color._b/255
-																			);
-																			for(var i=0;i<arr_vec3f.length-1;i++){//splice???
+																			//var material=new BABYLON.StandardMaterial(this.scene);
+																			//material.alpha=opacity;
+																			for(var i=0;i<arr_vec3f.length-2;i+=3){
 																				var x_0=arr_vec3f[i+0].get('x');
 																				var y_0=arr_vec3f[i+0].get('y');
 																				var z_0=arr_vec3f[i+0].get('z');
 																				var x_1=arr_vec3f[i+1].get('x');
 																				var y_1=arr_vec3f[i+1].get('y');
 																				var z_1=arr_vec3f[i+1].get('z');
+																				var x_2=arr_vec3f[i+2].get('x');
+																				var y_2=arr_vec3f[i+2].get('y');
+																				var z_2=arr_vec3f[i+2].get('z');
 																				var quadraticBezierVectors=BABYLON.Curve3.CreateQuadraticBezier(
-																					BABYLON.Vector3.Zero(),
 																					new BABYLON.Vector3(x_0,y_0,z_0),
 																					new BABYLON.Vector3(x_1,y_1,z_1),
-																					25
+																					new BABYLON.Vector3(x_2,y_2,z_2),
+																					nbPoints
 																				);
 																				var quadraticBezierCurve=BABYLON.Mesh.CreateLines(
 																					"qbezier",
 																					quadraticBezierVectors.getPoints(),
 																					this.scene
 																				);
-																				//quadraticBezierCurve.color=new BABYLON.Color3(1,1,0.5);
+																				quadraticBezierCurve.color=new BABYLON.Color3(
+																					_color._r/255,
+																					_color._g/255,
+																					_color._b/255
+																				);
 																				quadraticBezierCurve.material=material;
+																				quadraticBezierCurve.rotation.x=rotx;
+																				quadraticBezierCurve.rotation.y=roty;
+																				quadraticBezierCurve.rotation.z=rotz;
+																				quadraticBezierCurve.position=new BABYLON.Vector3(x,y,z);
 																			}
 																		}else{
 																			console.info('Not Creating '+obj_primitive.getEntity()+": Invalid number of points")
