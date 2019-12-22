@@ -45,8 +45,11 @@ public class UserActionsRegistrar
     registrator.registerUserAction(fsutils.actions.ja_unarc_z.class);
     registrator.registerUserAction(fsutils.actions.ja_unarc_zip.class);
     registrator.registerUserAction(fsutils.actions.ja_unarc_zstandard.class);
+    registrator.registerUserAction(scenegraph.actions.ja_cos.class);
     registrator.registerUserAction(scenegraph.actions.ja_imendixobject2json.class);
+    registrator.registerUserAction(scenegraph.actions.ja_sin.class);
     registrator.registerUserAction(scenegraph.actions.ja_str2filedocument.class);
+    registrator.registerUserAction(scenegraph.actions.ja_tan.class);
     registrator.registerUserAction(splitstringutility.actions.SplitString.class);
     registrator.registerUserAction(system.actions.VerifyPassword.class);
   }

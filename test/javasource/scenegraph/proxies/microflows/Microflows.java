@@ -28,6 +28,19 @@ public class Microflows
 			throw new MendixRuntimeException(e);
 		}
 	}
+	public static scenegraph.proxies.Scene ds_spiral(IContext context)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			IMendixObject result = (IMendixObject)Core.execute(context, "SceneGraph.ds_spiral", params);
+			return result == null ? null : scenegraph.proxies.Scene.initialize(context, result);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
 	public static void ivk_add_texture(IContext context, scenegraph.proxies.Primitive _obj_primitive)
 	{
 		try
