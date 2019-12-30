@@ -77,7 +77,7 @@ public class Microflows
 			throw new MendixRuntimeException(e);
 		}
 	}
-	public static void sub_sphere_add(IContext context, java.lang.Long _x, java.util.List<scenegraph.proxies.Primitive> _arr_primitive, scenegraph.proxies.Scene _obj_scene, java.util.List<scenegraph.proxies.Node> _arr_node, java.lang.String _color, java.lang.String _name, java.lang.Long _z, java.lang.Long _y, java.lang.Double _radius, java.lang.Double _rotationX, java.lang.Double _rotationY, java.lang.Double _rotationZ)
+	public static void sub_sphere_add(IContext context, java.lang.Long _x, java.util.List<scenegraph.proxies.Primitive> _arr_primitive, scenegraph.proxies.Scene _obj_scene, java.util.List<scenegraph.proxies.Node> _arr_node, java.lang.String _color, java.lang.String _name, java.lang.Long _z, java.lang.Long _y, java.lang.Double _radius, java.lang.Double _rotationX, java.lang.Double _rotationY, java.lang.Double _rotationZ, java.lang.String _imagename)
 	{
 		try
 		{
@@ -108,6 +108,7 @@ public class Microflows
 			params.put("RotationX", _rotationX);
 			params.put("RotationY", _rotationY);
 			params.put("RotationZ", _rotationZ);
+			params.put("Imagename", _imagename);
 			Core.execute(context, "App.sub_sphere_add", params);
 		}
 		catch (CoreException e)
