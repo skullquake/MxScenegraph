@@ -15,19 +15,6 @@ import com.mendix.systemwideinterfaces.core.IMendixObject;
 public class Microflows
 {
 	// These are the microflows for the App module
-	public static scenegraph.proxies.Scene ds_scene_solarsystem(IContext context)
-	{
-		try
-		{
-			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
-			IMendixObject result = (IMendixObject)Core.execute(context, "App.ds_scene_solarsystem", params);
-			return result == null ? null : scenegraph.proxies.Scene.initialize(context, result);
-		}
-		catch (CoreException e)
-		{
-			throw new MendixRuntimeException(e);
-		}
-	}
 	public static scenegraph.proxies.Scene ds_scene_warehouse(IContext context)
 	{
 		try
@@ -71,45 +58,6 @@ public class Microflows
 			}
 			params.put("arr_node", listparam_arr_node);
 			Core.execute(context, "App.sub_pallet_add", params);
-		}
-		catch (CoreException e)
-		{
-			throw new MendixRuntimeException(e);
-		}
-	}
-	public static void sub_sphere_add(IContext context, java.lang.Long _x, java.util.List<scenegraph.proxies.Primitive> _arr_primitive, scenegraph.proxies.Scene _obj_scene, java.util.List<scenegraph.proxies.Node> _arr_node, java.lang.String _color, java.lang.String _name, java.lang.Long _z, java.lang.Long _y, java.lang.Double _radius, java.lang.Double _rotationX, java.lang.Double _rotationY, java.lang.Double _rotationZ, java.lang.String _imagename)
-	{
-		try
-		{
-			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
-			params.put("X", _x);
-			java.util.ArrayList<IMendixObject> listparam_arr_primitive = null;
-			if (_arr_primitive != null)
-			{
-				listparam_arr_primitive = new java.util.ArrayList<IMendixObject>();
-				for (scenegraph.proxies.Primitive obj : _arr_primitive)
-					listparam_arr_primitive.add(obj.getMendixObject());
-			}
-			params.put("arr_primitive", listparam_arr_primitive);
-			params.put("obj_scene", _obj_scene == null ? null : _obj_scene.getMendixObject());
-			java.util.ArrayList<IMendixObject> listparam_arr_node = null;
-			if (_arr_node != null)
-			{
-				listparam_arr_node = new java.util.ArrayList<IMendixObject>();
-				for (scenegraph.proxies.Node obj : _arr_node)
-					listparam_arr_node.add(obj.getMendixObject());
-			}
-			params.put("arr_node", listparam_arr_node);
-			params.put("Color", _color);
-			params.put("Name", _name);
-			params.put("Z", _z);
-			params.put("Y", _y);
-			params.put("Radius", _radius);
-			params.put("RotationX", _rotationX);
-			params.put("RotationY", _rotationY);
-			params.put("RotationZ", _rotationZ);
-			params.put("Imagename", _imagename);
-			Core.execute(context, "App.sub_sphere_add", params);
 		}
 		catch (CoreException e)
 		{

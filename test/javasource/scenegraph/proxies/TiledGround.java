@@ -40,7 +40,8 @@ public class TiledGround extends scenegraph.proxies.Primitive
 		opacity("opacity"),
 		Primitive_Node("SceneGraph.Primitive_Node"),
 		Selected("SceneGraph.Selected"),
-		Texture("SceneGraph.Texture");
+		Texture("SceneGraph.Texture"),
+		Primitive_Material("SceneGraph.Primitive_Material");
 
 		private java.lang.String metaName;
 

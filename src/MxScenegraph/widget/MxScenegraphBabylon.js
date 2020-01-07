@@ -194,9 +194,17 @@ require(
 											var tx=obj_camera.get('tx')==null?0:obj_camera.get('tx');
 											var ty=obj_camera.get('ty')==null?0:obj_camera.get('ty');
 											var tz=obj_camera.get('tz')==null?0:obj_camera.get('tz');
-											this.camera.position=new BABYLON.Vector3(x,y,z);
+/*
+											this.camera.position.x=x;
+											this.camera.position.y=y;
+											this.camera.position.z=z;
+											this.camera.target.x=tx;
+											this.camera.target.y=ty;
+											this.camera.target.z=tz;
+*/
+											//=new BABYLON.Vector3(x,y,z);
 											//this.camera.target=new BABYLON.Vector3(tx,ty,tz);
-											window.camera=this.camera;
+											//window.camera=this.camera;
 										}
 										//get nodes
 										return new Promise(
@@ -229,9 +237,10 @@ require(
 								)
 							).then(
 								dojo.hitch(this,function(arr_node){
-									var arr_promise=[];
+									var arr_promise_primitive=[];
+									var arr_promise_light=[];
 									arr_node.forEach(dojo.hitch(this,function(obj_node,obj_nodeidx){
-										arr_promise.push(
+										arr_promise_primitive.push(
 											new Promise((resolve,reject)=>{
 													mx.data.get({
 													    guid:obj_node.getGuid(),
@@ -249,8 +258,77 @@ require(
 													});
 											})
 										);
-									}))
-									Promise.all(arr_promise).then(
+										arr_promise_light.push(
+											new Promise((resolve,reject)=>{
+													mx.data.get({
+													    guid:obj_node.getGuid(),
+													    path:'SceneGraph.Light_Node',
+													    filter:{
+														offset:0,
+														amount:4096
+													    },
+													    callback:dojo.hitch(this,function(arr_primitive){
+														resolve(arr_primitive);
+													    }),
+													    error:dojo.hitch(this,function(e){
+														reject(e);
+													    })
+													});
+											})
+										);
+									}));
+									Promise.all(arr_promise_light).then(
+										dojo.hitch(this,function(arr_arr_light){
+											arr_arr_light.forEach(dojo.hitch(this,function(arr_light,arr_light_idx){
+												arr_light.forEach(dojo.hitch(this,function(obj_light,obj_light_idx){
+													var intensity=obj_light.get('intensity')==null?100:obj_light.get('intensity');
+													switch(obj_light.getEntity()){
+														case 'SceneGraph.PointLight':
+															var px=obj_light.get('px')==null?0:obj_light.get('px');
+															var py=obj_light.get('py')==null?0:obj_light.get('py');
+															var pz=obj_light.get('pz')==null?0:obj_light.get('pz');
+															var colordiffuse=obj_primitive.get('diffuse');
+															var _colordiffuse=_tinycolor(colordiffuse);
+															var colorspecular=obj_primitive.get('specular');
+															var _colorspecular=_tinycolor(colorspecular);
+															var light=new BABYLON.PointLight(
+																"PointLight",
+																new BABYLON.Vector3(px,py,pz),
+																this.scene
+															);
+															light.intensity=intensity;
+															light.diffuse=new BABYLON.Color3(
+																_colordiffuse._r/255,
+																_colordiffuse._g/255,
+																_colordiffuse._b/255
+															)
+															light.specular=new BABYLON.Color3(
+																_colorspecular._r/255,
+																_colorspecular._g/255,
+																_colorspecular._b/255
+															)
+															break;
+														case 'SceneGraph.DirectionalLight':
+															console.log('unimplemented light');
+															break;
+														case 'SceneGraph.SpotLight':
+															console.log('unimplemented light');
+															break;
+														case 'SceneGraph.HemisphericalLight':
+															console.log('unimplemented light');
+															break;
+														case 'SceneGraph.Light':
+															console.log('unimplemented light');
+															break;
+														default:
+															console.log('invalid light');
+															break;
+													}
+												}))
+											}));
+										})
+									);
+									Promise.all(arr_promise_primitive).then(
 										dojo.hitch(this,function(arr_arr_primitive){
 											arr_arr_primitive.forEach(dojo.hitch(this,function(arr_primitive,arr_primitive_idx){
 												arr_primitive.forEach(dojo.hitch(this,function(obj_primitive,obj_primitive_idx){
@@ -334,8 +412,6 @@ require(
 																			var nbPoints=obj_primitive.get('nbPoints');
 																			var color=obj_primitive.get('color');
 																			var _color=_tinycolor(color);
-																			//var material=new BABYLON.StandardMaterial(this.scene);
-																			//material.alpha=opacity;
 																			for(var i=0;i<arr_vec3f.length-2;i+=3){
 																				var x_0=arr_vec3f[i+0].get('x');
 																				var y_0=arr_vec3f[i+0].get('y');
@@ -510,10 +586,7 @@ require(
 																},
 																this.scene
 															);
-															//var plane = BABYLON.MeshBuilder.CreatePlane("plane", {height:1, width: 0.665, sideOrientation: BABYLON.Mesh.DOUBLESIDE, frontUVs: f, backUVs: b}, scene);
 															plane.position=new BABYLON.Vector3(x,y,z);
-															//var orientation = BABYLON.Vector3.RotationFromAxis(1,1,1);//axis1, axis2, axis3);
-															//plane.rotation = orientation;
 															plane.rotation.x=rotx;
 															plane.rotation.y=roty;
 															plane.rotation.z=rotz;
@@ -626,8 +699,6 @@ require(
 																			dojo.hitch(this,function(){
 																			})
 																		);
-																		//var hl = new BABYLON.HighlightLayer("hl1", this.scene);
-																		//hl.addMesh(pickedMesh, BABYLON.Color3.Green());
 																	}
 																}))
 															);
@@ -713,8 +784,6 @@ require(
 																			dojo.hitch(this,function(){
 																			})
 																		);
-																		//var hl = new BABYLON.HighlightLayer("hl1", this.scene);
-																		//hl.addMesh(pickedMesh, BABYLON.Color3.Green());
 																	}
 																}))
 															);
@@ -732,7 +801,6 @@ require(
 																},
 																this.scene
 															);
-															sphere.position = new BABYLON.Vector3(x,y,z);
 															var color=obj_primitive.get('color');
 															var _color=_tinycolor(color);
 															var material=new BABYLON.StandardMaterial(this.scene);
@@ -763,6 +831,9 @@ require(
 																	console.error("Could not retrieve objects:",e);
 																}
 															});
+															sphere.position.x=x;
+															sphere.position.y=y;
+															sphere.position.z=z;
 															sphere.rotation.x=rotx;
 															sphere.rotation.y=roty;
 															sphere.rotation.z=rotz;
@@ -795,8 +866,6 @@ require(
 																			dojo.hitch(this,function(){
 																			})
 																		);
-																		//var hl = new BABYLON.HighlightLayer("hl1", this.scene);
-																		//hl.addMesh(pickedMesh, BABYLON.Color3.Green());
 																	}
 																}))
 															);
@@ -882,8 +951,6 @@ require(
 																			dojo.hitch(this,function(){
 																			})
 																		);
-																		//var hl = new BABYLON.HighlightLayer("hl1", this.scene);
-																		//hl.addMesh(pickedMesh, BABYLON.Color3.Green());
 																	}
 																}))
 															);
@@ -900,7 +967,6 @@ require(
 																{
 																	thickness:thickness,
 																	diameter:d,
-																	//tessellation:tessellation//borks
 																	sideOrientation:doublesided?BABYLON.Mesh.DOUBLESIDE:BABYLON.Mesh.FRONTSIDE //borks
 																},
 																this.scene
@@ -969,8 +1035,6 @@ require(
 																			dojo.hitch(this,function(){
 																			})
 																		);
-																		//var hl = new BABYLON.HighlightLayer("hl1", this.scene);
-																		//hl.addMesh(pickedMesh, BABYLON.Color3.Green());
 																	}
 																}))
 															);
@@ -1062,8 +1126,6 @@ require(
 																			dojo.hitch(this,function(){
 																			})
 																		);
-																		//var hl = new BABYLON.HighlightLayer("hl1", this.scene);
-																		//hl.addMesh(pickedMesh, BABYLON.Color3.Green());
 																	}
 																}))
 															);
@@ -1148,8 +1210,6 @@ require(
 																			dojo.hitch(this,function(){
 																			})
 																		);
-																		//var hl = new BABYLON.HighlightLayer("hl1", this.scene);
-																		//hl.addMesh(pickedMesh, BABYLON.Color3.Green());
 																	}
 																}))
 															);
@@ -1171,7 +1231,6 @@ require(
 																		var height=obj_primitive.get('height')==null?1:obj_primitive.get('height')>0?obj_primitive.get('height'):1;
 																		var subdivisions=Math.floor(obj_primitive.get('subdivisions')==null?1:obj_primitive.get('subdivisions')>0?obj_primitive.get('subdivisions'):32);
 																		var doublesided=obj_primitive.get('doublesided')==null?obj_primitive.get('doublesided'):false;
-																		//var ground = BABYLON.MeshBuilder.CreateGroundFromHeightMap("gdhm", url, {width: 6, subdivisions: 4}, scene);
 																		var heightmapground=BABYLON.MeshBuilder.CreateGroundFromHeightMap(
 																			"",
 																			urlheightmap,
@@ -1355,8 +1414,6 @@ require(
 																			dojo.hitch(this,function(){
 																			})
 																		);
-																		//var hl = new BABYLON.HighlightLayer("hl1", this.scene);
-																		//hl.addMesh(pickedMesh, BABYLON.Color3.Green());
 																	}
 																}))
 															);
@@ -1366,7 +1423,6 @@ require(
 															var sz=obj_primitive.get('sz')/10;
 															var val=obj_primitive.get('val');
 															var color=obj_primitive.get('color');
-															//var Writer=BABYLON.MeshWriter(this.scene,{scale:1});
 															var Writer=MeshWriter(this.scene,{scale:sz});
 															var text1=new Writer(
 																val,
@@ -1425,8 +1481,6 @@ require(
 																			dojo.hitch(this,function(){
 																			})
 																		);
-																		//var hl = new BABYLON.HighlightLayer("hl1", this.scene);
-																		//hl.addMesh(pickedMesh, BABYLON.Color3.Green());
 																	}
 																}))
 															);
@@ -1487,8 +1541,6 @@ require(
 																									dojo.hitch(this,function(){
 																									})
 																								);
-																								//var hl = new BABYLON.HighlightLayer("hl1", this.scene);
-																								//hl.addMesh(pickedMesh, BABYLON.Color3.Green());
 																							}
 																						}))
 																					);
@@ -1598,6 +1650,7 @@ require(
 						this.canvas,
 						true
 					);
+					/* todo: test for now lights and add, or if db lights, remove these
 					this.light1=new BABYLON.HemisphericLight(
 						"light1",
 						new BABYLON.Vector3(1,1,0),
@@ -1608,6 +1661,7 @@ require(
 						new BABYLON.Vector3(0,1,-1),
 						scene
 					);
+					*/
 					scene.onKeyboardObservable.add((kbInfo) => {
 						switch (kbInfo.type) {
 							case BABYLON.KeyboardEventTypes.KEYDOWN:
@@ -1618,8 +1672,6 @@ require(
 								break;
 						}
 					});
-					window.scene=scene;
-					//BABYLON.SceneLoader.ImportMesh("", "/", "duck.gltf", this.scene, function (scene) { }, undefined, undefined, '.gltf');
 					return scene;
 				},
 				loop:function(){ 

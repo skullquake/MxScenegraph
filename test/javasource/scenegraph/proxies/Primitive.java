@@ -35,7 +35,8 @@ public class Primitive
 		opacity("opacity"),
 		Primitive_Node("SceneGraph.Primitive_Node"),
 		Selected("SceneGraph.Selected"),
-		Texture("SceneGraph.Texture");
+		Texture("SceneGraph.Texture"),
+		Primitive_Material("SceneGraph.Primitive_Material");
 
 		private java.lang.String metaName;
 
@@ -782,6 +783,49 @@ public class Primitive
 		for (scenegraph.proxies.Image proxyObject : texture)
 			identifiers.add(proxyObject.getMendixObject().getId());
 		getMendixObject().setValue(context, MemberNames.Texture.toString(), identifiers);
+	}
+
+	/**
+	 * @return value of Primitive_Material
+	 */
+	public final scenegraph.proxies.Material getPrimitive_Material() throws com.mendix.core.CoreException
+	{
+		return getPrimitive_Material(getContext());
+	}
+
+	/**
+	 * @param context
+	 * @return value of Primitive_Material
+	 */
+	public final scenegraph.proxies.Material getPrimitive_Material(com.mendix.systemwideinterfaces.core.IContext context) throws com.mendix.core.CoreException
+	{
+		scenegraph.proxies.Material result = null;
+		com.mendix.systemwideinterfaces.core.IMendixIdentifier identifier = getMendixObject().getValue(context, MemberNames.Primitive_Material.toString());
+		if (identifier != null)
+			result = scenegraph.proxies.Material.load(context, identifier);
+		return result;
+	}
+
+	/**
+	 * Set value of Primitive_Material
+	 * @param primitive_material
+	 */
+	public final void setPrimitive_Material(scenegraph.proxies.Material primitive_material)
+	{
+		setPrimitive_Material(getContext(), primitive_material);
+	}
+
+	/**
+	 * Set value of Primitive_Material
+	 * @param context
+	 * @param primitive_material
+	 */
+	public final void setPrimitive_Material(com.mendix.systemwideinterfaces.core.IContext context, scenegraph.proxies.Material primitive_material)
+	{
+		if (primitive_material == null)
+			getMendixObject().setValue(context, MemberNames.Primitive_Material.toString(), null);
+		else
+			getMendixObject().setValue(context, MemberNames.Primitive_Material.toString(), primitive_material.getMendixObject().getId());
 	}
 
 	/**

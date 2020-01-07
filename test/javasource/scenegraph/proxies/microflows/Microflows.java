@@ -15,6 +15,18 @@ import com.mendix.systemwideinterfaces.core.IMendixObject;
 public class Microflows
 {
 	// These are the microflows for the SceneGraph module
+	public static void ds_lights(IContext context)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			Core.execute(context, "SceneGraph.ds_lights", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
 	public static scenegraph.proxies.Scene ds_scene(IContext context)
 	{
 		try
@@ -67,13 +79,26 @@ public class Microflows
 			throw new MendixRuntimeException(e);
 		}
 	}
-	public static void ivk_configure(IContext context, scenegraph.proxies.Primitive _obj_primitive)
+	public static void ivk_configure_light(IContext context, scenegraph.proxies.Light _obj_light)
+	{
+		try
+		{
+			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
+			params.put("obj_light", _obj_light == null ? null : _obj_light.getMendixObject());
+			Core.execute(context, "SceneGraph.ivk_configure_light", params);
+		}
+		catch (CoreException e)
+		{
+			throw new MendixRuntimeException(e);
+		}
+	}
+	public static void ivk_configure_primitive(IContext context, scenegraph.proxies.Primitive _obj_primitive)
 	{
 		try
 		{
 			Map<java.lang.String, Object> params = new HashMap<java.lang.String, Object>();
 			params.put("obj_primitive", _obj_primitive == null ? null : _obj_primitive.getMendixObject());
-			Core.execute(context, "SceneGraph.ivk_configure", params);
+			Core.execute(context, "SceneGraph.ivk_configure_primitive", params);
 		}
 		catch (CoreException e)
 		{
